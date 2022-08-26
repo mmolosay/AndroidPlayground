@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Playground</string>
+
+    <string name="test">This text is <annotation color="$arg$color$0">annotated</annotation></string>
+</resources>
