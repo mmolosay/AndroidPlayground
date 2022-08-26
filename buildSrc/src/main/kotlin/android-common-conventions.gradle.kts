@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-dependencies {
-
+repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
 }

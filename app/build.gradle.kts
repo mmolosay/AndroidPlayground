@@ -1,5 +1,7 @@
 plugins {
-    id("android-application-conventions")
+//    id("android-application-conventions")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -34,9 +36,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
 }
 
 dependencies {
