@@ -1,7 +1,5 @@
 plugins {
-//    id("android-application-conventions")
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("android-application-conventions")
 }
 
 android {
