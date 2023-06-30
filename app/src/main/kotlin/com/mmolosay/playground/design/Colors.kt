@@ -1,4 +1,4 @@
-package com.mmolosay.playground.ui.theme
+package com.mmolosay.playground.design
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun getColorScheme(theme: Theme) =
     when (theme) {
-        Theme.Light -> lightColorScheme
-        Theme.Dark -> darkColorScheme
+        Theme.Light -> getColorScheme(useDark = false)
+        Theme.Dark -> getColorScheme(useDark = true)
         Theme.DayNight -> getColorScheme(useDark = isSystemInDarkTheme())
     }
 
@@ -19,9 +19,11 @@ private fun getColorScheme(useDark: Boolean) =
         true -> darkColorScheme
     }
 
-private val lightColorScheme =
+private val lightColorScheme by lazy {
     lightColorScheme()
+}
 
-private val darkColorScheme =
+private val darkColorScheme by lazy {
     darkColorScheme()
+}
 

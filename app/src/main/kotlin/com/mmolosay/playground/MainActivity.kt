@@ -1,22 +1,22 @@
-package com.mmolosay.playground.ui
+package com.mmolosay.playground
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.mmolosay.playground.ui.components.Main
-import com.mmolosay.playground.ui.components.common.Screen
-import com.mmolosay.playground.ui.theme.PlaygroundTheme
+import com.mmolosay.playground.design.PlaygroundTheme
+import com.mmolosay.playground.ui.MainScreen
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent()
+    }
+
+    private fun setContent() =
         setContent {
             PlaygroundTheme {
-                Screen {
-                    Main()
-                }
+                MainScreen()
             }
         }
-    }
 }

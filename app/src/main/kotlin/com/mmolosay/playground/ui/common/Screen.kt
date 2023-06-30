@@ -1,4 +1,4 @@
-package com.mmolosay.playground.ui.components.common
+package com.mmolosay.playground.ui.common
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding

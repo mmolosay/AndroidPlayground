@@ -1,4 +1,4 @@
-package com.mmolosay.playground.ui.theme
+package com.mmolosay.playground.design
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -6,13 +6,12 @@ import androidx.compose.runtime.Composable
 @Composable
 fun PlaygroundTheme(
     theme: Theme = Theme.DayNight,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = getColorScheme(theme),
-    ) {
-        content()
-    }
+        content = content,
+    )
 }
 
 enum class Theme {

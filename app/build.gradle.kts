@@ -1,9 +1,11 @@
 plugins {
-    id("android-application-conventions")
+    id("org.jetbrains.kotlin.android")
+    id("com.android.application")
 }
 
 android {
     compileSdk = 33
+    namespace = "com.mmolosay.playground"
 
     defaultConfig {
         applicationId = "com.mmolosay.playground"
@@ -16,61 +18,57 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-        getByName("debug") {
+        debug {
             isMinifyEnabled = false
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.1"
+        kotlinCompilerExtensionVersion = "1.4.3"
     }
-//    kotlinOptions {
-//        jvmTarget = "1.8"
-//    }
 }
 
 dependencies {
 
     // AndroidX
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha02")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
     // Design
-    implementation("com.google.android.material:material:1.6.1")
-    implementation("androidx.compose.material3:material3:1.0.0-beta03")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.compose.material3:material3:1.1.1")
 
     // Compose
-    implementation("androidx.compose.ui:ui:1.2.1")
-    implementation("androidx.compose.foundation:foundation:1.2.1")
-    implementation("androidx.compose.material:material-icons-core:1.2.1")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.1")
-    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation(platform("androidx.compose:compose-bom:2023.05.01"))
+    // https://developer.android.com/jetpack/compose/bom/bom-mapping
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material:material-icons-core")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.activity:activity-compose:1.7.2")
 
     // Third-party
-    implementation("com.github.mmolosay.stringannotations:compose:1.8.0")
+    implementation("io.github.mmolosay:debounce:1.0.0")
 //    implementation("com.github.mmolosay.resource:resource-context:1.1.3")
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
