@@ -122,23 +122,18 @@ fun ToggleButton(
         Layout(
             measurePolicy = { measurables, constraints ->
                 val placeables = measurables.map { it.measure(constraints) }
-                val layoutWidth = placeables
-                    .maxOf { it.width }
-                    .coerceIn(constraints.minWidth, constraints.maxWidth)
-                val layoutHeight = placeables
-                    .maxOf { it.height }
-                    .coerceIn(constraints.minHeight, constraints.maxHeight)
-                layout(layoutWidth, layoutHeight) {
-                    val content = if (showFirst) placeables[1] else placeables[0]
-                    val x = (layoutWidth / 2) - (content.width / 2)
-                    val y = (layoutHeight / 2) - (content.height / 2)
+                val width = placeables.maxOf { it.width }
+                val height = placeables.maxOf { it.height }
+                layout(width, height) {
+                    val content = if (showFirst) placeables[0] else placeables[1]
+                    val x = (width / 2) - (content.width / 2)
+                    val y = (height / 2) - (content.height / 2)
                     content.placeRelative(x, y)
                 }
             },
             content = {
-                // z ordering
-                content2()
                 content1()
+                content2()
             },
         )
     }
