@@ -1,4 +1,4 @@
-package com.mmolosay.playground.ui.common
+package com.mmolosay.playground.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

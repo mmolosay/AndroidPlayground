@@ -20,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmolosay.playground.design.PlaygroundTheme
 import com.mmolosay.playground.ui.common.Screen
-import com.mmolosay.playground.ui.common.ToggleLayoutSize
-import com.mmolosay.playground.ui.common.ToggleLoadingLayout
 import io.github.mmolosay.debounce.debounced
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
