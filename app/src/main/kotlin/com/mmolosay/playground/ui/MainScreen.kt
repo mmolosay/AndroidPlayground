@@ -73,7 +73,8 @@ fun StyledToggleLoadingButton1() {
     val loadingContent =
         @Composable {
             CircularProgressIndicator(
-                color = LocalContentColor.current,
+                color = LocalContentColor.current.copy(alpha = 0.5f),
+                strokeWidth = 2.dp,
             )
         }
 
@@ -104,9 +105,8 @@ fun StyledToggleLoadingButton2() {
     fun LoadingContent() =
         CircularProgressIndicator(
             modifier = Modifier
-                .fillMaxSize()
-                .aspectRatio(1.0f, matchHeightConstraintsFirst = true),
-            color = LocalContentColor.current,
+                .aspectRatio(1.0f),
+            color = LocalContentColor.current.copy(alpha = 0.5f),
             strokeWidth = 1.5.dp,
         )
 
