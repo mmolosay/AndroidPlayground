@@ -79,7 +79,10 @@ fun StyledToggleLoadingButton1() {
             )
         }
 
-    StyledButton(onClick = onClick) {
+    StyledButton(
+        onClick = onClick,
+        enabled = !loading,
+    ) {
         ToggleLoadingLayout(
             size = ToggleLayoutSize.MaxMeasurements,
             loading = loading,
@@ -109,7 +112,10 @@ fun StyledToggleLoadingButton2() {
             strokeWidth = 1.5.dp,
         )
 
-    StyledButton(onClick = onClick) {
+    StyledButton(
+        onClick = onClick,
+        enabled = !loading,
+    ) {
         ToggleLoadingLayout(
             size = ToggleLayoutSize.SizeOfFirst,
             loading = loading,

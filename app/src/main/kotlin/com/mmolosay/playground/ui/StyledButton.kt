@@ -74,10 +74,13 @@ object StyledButtonDefaults {
 
     @Composable
     fun buttonColors(): ButtonColors {
-        val containerColor = MaterialTheme.colorScheme.tertiaryContainer
+        val background = MaterialTheme.colorScheme.tertiaryContainer
+        val content = contentColorFor(background)
         return ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColorFor(containerColor),
+            containerColor = background,
+            contentColor = contentColorFor(background),
+            disabledContainerColor = background.copy(alpha = 0.5f),
+            disabledContentColor = content,
         )
     }
 
