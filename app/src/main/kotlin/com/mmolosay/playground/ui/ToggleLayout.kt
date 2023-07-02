@@ -74,7 +74,6 @@ fun ToggleLayoutMaxMeasurements(
     )
 }
 
-
 /**
  * Implementation of [ToggleLayout] of [ToggleLayoutSize.SizeOfFirst] type.
  *
