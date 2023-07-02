@@ -3,6 +3,7 @@ package com.mmolosay.playground.ui.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Placeable
 
 /**
  * Layout that displays either [content1] or [content2] depending on value of [showFirst] flag.
@@ -56,7 +57,6 @@ fun ToggleLayoutMaxMeasurements(
     Layout(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
-            // TODO: optimize by measuring only content that will be drawn
             val placeables = measurables.map { it.measure(constraints) }
             val width = placeables.maxOf { it.width }
             val height = placeables.maxOf { it.height }
@@ -91,17 +91,21 @@ fun ToggleLayoutSizeOfFirst(
     Layout(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
-            // TODO: optimize by measuring only content that will be drawn
             val placeable1 = measurables[0].measure(constraints)
             val width = placeable1.width
             val height = placeable1.height
-            val coerceConstraints = constraints.copy(
-                maxWidth = width,
-                maxHeight = height,
-            )
-            val placeable2 = measurables[1].measure(coerceConstraints)
+
+            val content: Placeable = if (showFirst) {
+                placeable1
+            } else {
+                val coerceConstraints = constraints.copy(
+                    maxWidth = width,
+                    maxHeight = height,
+                )
+                measurables[1].measure(coerceConstraints)
+            }
+
             layout(width, height) {
-                val content = if (showFirst) placeable1 else placeable2
                 val x = (width / 2) - (content.width / 2)
                 val y = (height / 2) - (content.height / 2)
                 content.placeRelative(x, y)
