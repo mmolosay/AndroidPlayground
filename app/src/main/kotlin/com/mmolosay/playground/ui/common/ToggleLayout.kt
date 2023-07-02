@@ -10,7 +10,7 @@ import androidx.compose.ui.layout.Layout
  */
 @Composable
 fun ToggleLayout(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     size: ToggleLayoutSize,
     showFirst: Boolean,
     content1: @Composable () -> Unit,
@@ -56,6 +56,7 @@ fun ToggleLayoutMaxMeasurements(
     Layout(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
+            // TODO: optimize by measuring only content that will be drawn
             val placeables = measurables.map { it.measure(constraints) }
             val width = placeables.maxOf { it.width }
             val height = placeables.maxOf { it.height }
@@ -90,6 +91,7 @@ fun ToggleLayoutSizeOfFirst(
     Layout(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
+            // TODO: optimize by measuring only content that will be drawn
             val placeable1 = measurables[0].measure(constraints)
             val width = placeable1.width
             val height = placeable1.height

@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,13 +16,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmolosay.playground.design.PlaygroundTheme
 import com.mmolosay.playground.ui.common.Screen
-import com.mmolosay.playground.ui.common.ToggleLayout
 import com.mmolosay.playground.ui.common.ToggleLayoutSize
+import com.mmolosay.playground.ui.common.ToggleLoadingLayout
+import io.github.mmolosay.debounce.debounced
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -57,83 +58,74 @@ fun Main() {
             .padding(vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ToggleLoadingButton1()
-        ToggleLoadingButton2()
+        StyledToggleLoadingButton1()
+        StyledToggleLoadingButton2()
     }
 }
 
 @Composable
-fun ToggleLoadingButton1() {
-    var showLoading by remember { mutableStateOf(false) }
+fun StyledToggleLoadingButton1() {
     val scope = rememberCoroutineScope()
-    val onClick: () -> Unit = {
-        scope.launch {
-            showLoading = true // show loading when work is started
-            delay(2.seconds)
-            showLoading = false // hide loading once work is done
+    var loading by remember { mutableStateOf(false) }
+    val onClick = debounced(1.seconds) {
+        loading = true
+        doWork(scope) { loading = false }
+    }
+
+    val loadingContent =
+        @Composable {
+            CircularProgressIndicator(
+                color = LocalContentColor.current,
+            )
+        }
+
+    StyledButton(onClick = onClick) {
+        ToggleLoadingLayout(
+            size = ToggleLayoutSize.MaxMeasurements,
+            loading = loading,
+            loadingContent = loadingContent,
+        ) {
+            Text("Click me")
         }
     }
-    ToggleLoadingButton(
-        showLoading = showLoading,
-        size = ToggleLayoutSize.MaxMeasurements,
-        onClick = onClick,
-    ) {
-        Text("Click me")
-    }
 }
 
 @Composable
-fun ToggleLoadingButton2() {
-    var showLoading by remember { mutableStateOf(false) }
+fun StyledToggleLoadingButton2() {
     val scope = rememberCoroutineScope()
-    val onClick: () -> Unit = {
-        scope.launch {
-            showLoading = true // show loading when work is started
-            delay(2.seconds)
-            showLoading = false // hide loading once work is done
-        }
+    var loading by remember { mutableStateOf(false) }
+    val onClick = debounced(1.seconds) {
+        loading = true
+        doWork(scope) { loading = false }
     }
-    ToggleLoadingButton(
-        showLoading = showLoading,
-        size = ToggleLayoutSize.SizeOfFirst,
-        onClick = onClick,
-    ) {
-        Text("Click me")
-    }
-}
 
-@Composable
-fun ToggleLoadingButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    showLoading: Boolean,
-    size: ToggleLayoutSize,
-    loading: @Composable () -> Unit = { DefaultLoading() },
-    content: @Composable () -> Unit,
-) {
-    Button(
-        modifier = modifier,
-        onClick = onClick,
-    ) {
-        ToggleLayout(
-            modifier = modifier,
-            size = size,
-            showFirst = !showLoading,
-            content1 = content,
-            content2 = loading,
+    @Composable
+    fun LoadingContent() =
+        CircularProgressIndicator(
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(1.0f, matchHeightConstraintsFirst = true),
+            color = LocalContentColor.current,
+            strokeWidth = 1.5.dp,
         )
+
+    StyledButton(onClick = onClick) {
+        ToggleLoadingLayout(
+            size = ToggleLayoutSize.SizeOfFirst,
+            loading = loading,
+            loadingContent = { LoadingContent() },
+        ) {
+            Text("Click me")
+        }
     }
 }
 
-@Composable
-fun DefaultLoading(
-    modifier: Modifier = Modifier,
+private fun doWork(
+    coroutineScope: CoroutineScope,
+    onDone: () -> Unit,
 ) {
-    CircularProgressIndicator(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(1.0f),
-        color = Color.White,
-        strokeWidth = 2.dp,
-    )
+    coroutineScope.launch {
+        delay(2.seconds)
+        onDone()
+    }
 }
