@@ -3,6 +3,7 @@ package com.mmolosay.playground.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.Placeable
 
 /**
@@ -36,6 +37,9 @@ fun ToggleLayout(
     }
 }
 
+/**
+ * See [ToggleLayoutMaxMeasurements] and [ToggleLayoutSizeOfFirst].
+ */
 enum class ToggleLayoutSize {
     MaxMeasurements,
     SizeOfFirst,
@@ -60,17 +64,10 @@ fun ToggleLayoutMaxMeasurements(
             val placeables = measurables.map { it.measure(constraints) }
             val width = placeables.maxOf { it.width }
             val height = placeables.maxOf { it.height }
-            layout(width, height) {
-                val content = if (showFirst) placeables[0] else placeables[1]
-                val x = (width / 2) - (content.width / 2)
-                val y = (height / 2) - (content.height / 2)
-                content.placeRelative(x, y)
-            }
+            val content = if (showFirst) placeables[0] else placeables[1]
+            layoutSingleCentered(width, height, content)
         },
-        content = {
-            content1()
-            content2()
-        },
+        content = toggleLayoutContent(content1, content2),
     )
 }
 
@@ -103,16 +100,32 @@ fun ToggleLayoutSizeOfFirst(
                 )
                 measurables[1].measure(coerceConstraints)
             }
-
-            layout(width, height) {
-                val x = (width / 2) - (content.width / 2)
-                val y = (height / 2) - (content.height / 2)
-                content.placeRelative(x, y)
-            }
+            layoutSingleCentered(width, height, content)
         },
-        content = {
-            content1()
-            content2()
-        },
+        content = toggleLayoutContent(content1, content2),
     )
 }
+
+private fun toggleLayoutContent(
+    content1: @Composable () -> Unit,
+    content2: @Composable () -> Unit,
+): @Composable () -> Unit =
+    {
+        content1()
+        content2()
+    }
+
+/**
+ * Variation of [MeasureScope.layout] that places single [content] placeable
+ * in the center of specified [width] and [height].
+ */
+private fun MeasureScope.layoutSingleCentered(
+    width: Int,
+    height: Int,
+    content: Placeable,
+) =
+    layout(width, height) {
+        val x = (width / 2) - (content.width / 2)
+        val y = (height / 2) - (content.height / 2)
+        content.placeRelative(x, y)
+    }
