@@ -1,10 +1,10 @@
-package com.mmolosay.playground
+package com.mmolosay.playground.presentation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.mmolosay.playground.design.PlaygroundTheme
-import com.mmolosay.playground.ui.MainScreen
+import com.mmolosay.playground.presentation.design.PlaygroundTheme
+import com.mmolosay.playground.presentation.ui.MainScreen
 
 class MainActivity : AppCompatActivity() {
 
