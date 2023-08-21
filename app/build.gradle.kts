@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
 
     // Third-party
-    implementation("io.github.mmolosay:debounce:1.0.0")
+    implementation("io.github.mmolosay:debounce:1.1.0")
 //    implementation("com.github.mmolosay.resource:resource-context:1.1.3")
 
     // Testing
