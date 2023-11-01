@@ -1,6 +1,5 @@
 package com.mmolosay.playground.presentation.ui
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,8 +33,7 @@ fun Main() {
 // region Previews
 
 @Preview(
-//    showBackground = true,
-    uiMode = UI_MODE_NIGHT_NO,
+    showBackground = true,
 )
 @Composable
 private fun MainPreview() {
