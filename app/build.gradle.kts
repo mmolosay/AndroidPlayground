@@ -72,4 +72,7 @@ dependencies {
     implementation("io.github.mmolosay:debounce:1.2.0")
 
     // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.2") // more recent versions are incompatible
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
 }
