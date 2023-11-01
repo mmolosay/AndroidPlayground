@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = "com.mmolosay.playground"
 
     defaultConfig {
@@ -38,7 +38,8 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
 }
 
@@ -58,7 +59,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core:1.4.3")
 
     // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.05.01"))
+    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     // https://developer.android.com/jetpack/compose/bom/bom-mapping
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
