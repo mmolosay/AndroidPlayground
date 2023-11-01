@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
@@ -13,6 +14,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -45,14 +48,28 @@ fun LoadingButton(
     onClick: () -> Unit,
     loading: Boolean,
 ) {
+    val transition = updateTransition(
+        targetState = loading,
+        label = "master transition",
+    )
+    val horizontalContentPadding by transition.animateDp(
+        transitionSpec = {
+            spring(
+                stiffness = SpringStiffness,
+            )
+        },
+        targetValueByState = { toLoading -> if (toLoading) 12.dp else 24.dp },
+        label = "button's content padding",
+    )
     Button(
         onClick = onClick,
+        modifier = Modifier.defaultMinSize(minWidth = 1.dp),
+        contentPadding = PaddingValues(
+            horizontal = horizontalContentPadding,
+            vertical = 8.dp,
+        ),
     ) {
         Box(contentAlignment = Alignment.Center) {
-            val transition = updateTransition(
-                targetState = loading,
-                label = "master transition",
-            )
             LoadingContent(
                 loadingStateTransition = transition,
             )
@@ -195,7 +212,7 @@ private fun Modifier.horizontalSoftEdge(
 
 private val SpringStiffness = Spring.StiffnessMediumLow
 private val FadeOutVisibilityThreshold = 0.10f
-private val WidthAnimationSpringDumpingRatio = Spring.DampingRatioLowBouncy
+private val WidthAnimationSpringDumpingRatio = Spring.DampingRatioMediumBouncy
 
 @Preview
 @Composable
