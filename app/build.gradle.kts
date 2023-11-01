@@ -66,6 +66,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Third-party
     implementation("io.github.mmolosay:debounce:1.2.0")
