@@ -38,7 +38,8 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
 }
 
