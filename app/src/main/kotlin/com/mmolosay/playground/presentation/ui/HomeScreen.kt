@@ -9,17 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmolosay.playground.presentation.design.PlaygroundTheme
-import com.mmolosay.playground.presentation.ui.common.Screen
 
 @Composable
-fun MainScreen() {
-    Screen {
-        Main()
-    }
-}
-
-@Composable
-fun Main() {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,16 +22,12 @@ fun Main() {
     }
 }
 
-// region Previews
-
 @Preview(
     showBackground = true,
 )
 @Composable
 private fun MainPreview() {
     PlaygroundTheme {
-        MainScreen()
+        HomeScreen()
     }
 }
-
-// endregion
