@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation
+package com.mmolosay.playground.presentation.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -6,6 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mmolosay.playground.presentation.HomeScreen
+import com.mmolosay.playground.presentation.HomeViewModel
 
 @Composable
 fun MainNavHost(
