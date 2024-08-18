@@ -1,81 +1,74 @@
 plugins {
-    id("org.jetbrains.kotlin.android")
     id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
-    compileSdk = 34
     namespace = "com.mmolosay.playground"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.mmolosay.playground"
-        minSdk = 26
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
         debug {
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
+
+    java {
+        toolchain {
+            val version = libs.versions.java.get().toInt()
+            languageVersion.set(JavaLanguageVersion.of(version))
+        }
+    }
+
+    kapt {
+        correctErrorTypes = true
+    }
+
     composeOptions {
-        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
+@Suppress("SpellCheckingInspection")
 dependencies {
 
-    // AndroidX
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
-
-    // Design
-    implementation("com.google.android.material:material:1.9.0") // for Material3 xml theme
-    implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("androidx.compose.material:material-icons-core:1.4.3")
+    // Jetpack
+    implementation("androidx.appcompat:appcompat:${libs.versions.androidx.appcompat.get()}")
 
     // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
-    // https://developer.android.com/jetpack/compose/bom/bom-mapping
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material:material-icons-core")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    val composeBom = platform("androidx.compose:compose-bom:${libs.versions.compose.bom.get()}")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.hilt:hilt-navigation-compose:${libs.versions.hiltNavigationCompose.get()}")
 
-    // Third-party
-    implementation("io.github.mmolosay:debounce:1.2.0")
+    // Views
+    implementation("com.google.android.material:material:1.12.0")
 
-    // Testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.2") // more recent versions are incompatible
-    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
+    // Hilt
+    implementation("com.google.dagger:hilt-android:${libs.versions.hilt.get()}")
+    kapt("com.google.dagger:hilt-android-compiler:${libs.versions.hilt.get()}")
 }

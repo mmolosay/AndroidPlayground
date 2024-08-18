@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.ui
+package com.mmolosay.playground.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.mmolosay.playground.presentation.design.PlaygroundTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,6 +30,6 @@ fun HomeScreen() {
 @Composable
 private fun MainPreview() {
     PlaygroundTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }

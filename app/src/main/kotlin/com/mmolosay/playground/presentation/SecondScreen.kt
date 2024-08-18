@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.ui
+package com.mmolosay.playground.presentation
 
 import androidx.compose.runtime.Composable
 

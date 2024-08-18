@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.ui
+package com.mmolosay.playground.presentation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.mmolosay.playground.presentation.design.PlaygroundTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

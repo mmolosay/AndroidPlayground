@@ -1,7 +1,8 @@
-package com.mmolosay.playground.presentation.ui
+package com.mmolosay.playground.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,7 +18,10 @@ fun MainNavHost(
         modifier = modifier,
     ) {
         composable(route = "home") {
-            HomeScreen()
+            val viewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(
+                viewModel = viewModel,
+            )
         }
         composable(route = "secondScreen") {
 
