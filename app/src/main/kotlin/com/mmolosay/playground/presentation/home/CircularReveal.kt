@@ -112,8 +112,7 @@ private fun Modifier.circleClip(
 
 /**
  * Calculates a radius of a smallest circle that will fully cover given [rect].
- * The center of the circle is at receiver [Offset].
- * Assuming that [rect] is placed at [Offset.Zero].
+ * The center of the circle is at receiver [Offset], and [rect] is placed at [Offset.Zero].
  */
 private fun Offset.radiusOfCoveringCircle(rect: Rect): Float {
     val center = this
