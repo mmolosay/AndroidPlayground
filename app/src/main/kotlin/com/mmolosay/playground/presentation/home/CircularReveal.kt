@@ -71,15 +71,6 @@ class CircularRevealAnimator(
         )
     }
 
-    suspend fun play() {
-        if (progressAnimatable.isRunning) return
-        when (progressAnimatable.value) {
-            FullyCollapsedValue -> expand()
-            FullyExpandedValue -> collapse()
-            else -> return // do nothing
-        }
-    }
-
     companion object {
         const val FullyCollapsedValue = 0f
         const val FullyExpandedValue = 1f
