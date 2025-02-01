@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation
+package com.mmolosay.playground.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
