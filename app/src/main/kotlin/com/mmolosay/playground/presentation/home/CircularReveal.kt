@@ -15,7 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
+import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
@@ -29,6 +33,7 @@ fun CircularReveal(
     startContent: @Composable BoxScope.() -> Unit,
     endContent: @Composable BoxScope.() -> Unit,
     modifier: Modifier = Modifier,
+    position: (Size) -> Offset = { it.center },
 ) {
     val isEndContentFullyRevealed =
         (animator.progressAnimatable.value == FullyExpandedValue)
@@ -41,7 +46,10 @@ fun CircularReveal(
         }
         Box(
             modifier = Modifier
-                .circleClip(radiusFraction = animator.progressAnimatable.value),
+                .circleClip(
+                    center = position,
+                    radiusFraction = animator.progressAnimatable.value,
+                ),
             content = endContent,
         )
     }
@@ -84,18 +92,20 @@ class CircularRevealAnimator(
 }
 
 private fun Modifier.circleClip(
+    center: (Size) -> Offset,
     radiusFraction: Float,
 ): Modifier =
     drawWithCache {
         require(radiusFraction in 0f..1f)
         val path = Path()
-        val diagonal = hypot(this.size.width, this.size.height)
+        val center = center(this.size)
+        val radiusOfCoveringCircle = center.radiusOfCoveringCircle(this.size.toRect())
 
         onDrawWithContent {
             path.rewind()
             val circleRect = Rect(
-                center = this.center,
-                radius = (diagonal / 2) * radiusFraction,
+                center = center,
+                radius = radiusOfCoveringCircle * radiusFraction,
             )
             path.addOval(circleRect)
 
@@ -104,6 +114,26 @@ private fun Modifier.circleClip(
             }
         }
     }
+
+/**
+ * Calculates a radius of a smallest circle that will fully cover given [rect].
+ * The center of the circle is at receiver [Offset].
+ * Assuming that [rect] is placed at [Offset.Zero].
+ */
+private fun Offset.radiusOfCoveringCircle(rect: Rect): Float {
+    val center = this
+    val corners = listOf(
+        Offset(0f, 0f), // top left
+        Offset(rect.width, 0f), // top right
+        Offset(rect.width, rect.height), // bottom right
+        Offset(0f, rect.height), // bottom left
+    )
+    val distanceToCorners = corners.map { corner ->
+        hypot(corner.x - center.x, corner.y - center.y)
+    }
+    val distanceToFurthestCorner = distanceToCorners.max()
+    return distanceToFurthestCorner
+}
 
 @Preview
 @Composable
