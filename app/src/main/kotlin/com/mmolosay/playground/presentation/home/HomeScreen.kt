@@ -1,7 +1,5 @@
 package com.mmolosay.playground.presentation.home
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,9 +36,9 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val coroutineScope = rememberCoroutineScope()
-            val animatable = remember { Animatable(0f) }
+            val animator = remember { CircularRevealAnimator() }
             CircularReveal(
-                animatable = animatable,
+                animator = animator,
                 startContent = {
                     ContentA()
                 },
@@ -52,20 +50,14 @@ fun HomeScreen(
             Row {
                 Button(onClick = {
                     coroutineScope.launch {
-                        animatable.animateTo(
-                            targetValue = 1f,
-                            animationSpec = tween(3000),
-                        )
+                        animator.expand()
                     }
                 }) {
                     Text(text = "Expand")
                 }
                 Button(onClick = {
                     coroutineScope.launch {
-                        animatable.animateTo(
-                            targetValue = 0f,
-                            animationSpec = tween(3000),
-                        )
+                        animator.collapse()
                     }
                 }) {
                     Text(text = "Collapse")
