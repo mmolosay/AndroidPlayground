@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -39,14 +40,16 @@ fun HomeScreen(
             val coroutineScope = rememberCoroutineScope()
             val animator = remember { CircularRevealAnimator() }
             CircularReveal(
-                animator = animator,
+                progress = animator.progressAnimatable.value,
                 startContent = {
                     ContentA()
                 },
                 endContent = {
-                    ContentB()
+                    ContentB(
+                        modifier = Modifier,
+                    )
                 },
-                position = { size -> Offset(x = size.width / 2, y = size.height * 0.25f) },
+                position = { size -> Offset(x = size.width / 2, y = size.height * 0) },
             )
 
             Row {
@@ -70,9 +73,13 @@ fun HomeScreen(
 }
 
 @Composable
-private fun ContentA() {
+private fun ContentA(
+    modifier: Modifier = Modifier,
+) {
     ContentLayout(
-        modifier = Modifier.background(Color.Blue),
+        modifier = modifier
+            .background(Color.Blue)
+            .height(400.dp),
     ) {
         Text(
             text = "This is Content A, my friend",
@@ -84,9 +91,12 @@ private fun ContentA() {
 }
 
 @Composable
-private fun ContentB() {
+private fun ContentB(
+    modifier: Modifier = Modifier,
+) {
     ContentLayout(
-        modifier = Modifier.background(Color.Green),
+        modifier = modifier
+            .background(Color.Green),
     ) {
         Text(
             text = "Content B this is, friend of mine",

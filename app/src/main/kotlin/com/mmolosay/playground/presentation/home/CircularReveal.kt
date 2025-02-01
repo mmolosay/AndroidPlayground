@@ -7,7 +7,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,34 +23,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.tooling.preview.Preview
-import com.mmolosay.playground.presentation.home.CircularRevealAnimator.Companion.FullyExpandedValue
 import kotlin.math.hypot
 
 @Composable
 fun CircularReveal(
-    animator: CircularRevealAnimator,
-    startContent: @Composable BoxScope.() -> Unit,
-    endContent: @Composable BoxScope.() -> Unit,
+    progress: Float,
+    startContent: @Composable () -> Unit,
+    endContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     position: (Size) -> Offset = { it.center },
 ) {
-    val isEndContentFullyRevealed =
-        (animator.progressAnimatable.value == FullyExpandedValue)
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        if (!isEndContentFullyRevealed) {
-            startContent()
-        }
+        startContent()
         Box(
             modifier = Modifier
                 .circleClip(
                     center = position,
-                    radiusFraction = animator.progressAnimatable.value,
+                    radiusFraction = progress,
                 ),
-            content = endContent,
-        )
+        ) {
+            endContent()
+        }
     }
 }
 
@@ -139,14 +134,14 @@ private fun Offset.radiusOfCoveringCircle(rect: Rect): Float {
 @Composable
 private fun Preview() {
     val animator = remember { CircularRevealAnimator() }
-    val startContent: @Composable BoxScope.() -> Unit = {
+    val startContent: @Composable () -> Unit = {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Blue),
         )
     }
-    val endContent: @Composable BoxScope.() -> Unit = {
+    val endContent: @Composable () -> Unit = {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -154,7 +149,7 @@ private fun Preview() {
         )
     }
     CircularReveal(
-        animator = animator,
+        progress = animator.progressAnimatable.value,
         startContent = startContent,
         endContent = endContent,
     )
