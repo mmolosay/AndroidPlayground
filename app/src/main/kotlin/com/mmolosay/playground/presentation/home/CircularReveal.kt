@@ -77,7 +77,7 @@ class CircularRevealAnimator(
     }
 }
 
-private fun Modifier.circleClip(
+fun Modifier.circleClip(
     center: (Size) -> Offset,
     radiusFraction: Float,
 ): Modifier =
@@ -108,10 +108,10 @@ private fun Modifier.circleClip(
 private fun Offset.radiusOfCoveringCircle(rect: Rect): Float {
     val center = this
     val corners = listOf(
-        Offset(0f, 0f), // top left
-        Offset(rect.width, 0f), // top right
-        Offset(rect.width, rect.height), // bottom right
-        Offset(0f, rect.height), // bottom left
+        rect.topLeft,
+        rect.topRight,
+        rect.bottomRight,
+        rect.bottomLeft,
     )
     val distanceToCorners = corners.map { corner ->
         hypot(corner.x - center.x, corner.y - center.y)
