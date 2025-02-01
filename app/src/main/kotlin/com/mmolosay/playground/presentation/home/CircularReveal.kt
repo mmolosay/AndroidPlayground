@@ -1,13 +1,15 @@
 package com.mmolosay.playground.presentation.home
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -20,16 +22,12 @@ import kotlin.math.hypot
 
 @Composable
 fun CircularReveal(
+    animatable: Animatable<Float, AnimationVector1D>,
     startContent: @Composable BoxScope.() -> Unit,
     endContent: @Composable BoxScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val endContentRevealFraction by animateFloatAsState(
-        label = "end content reveal",
-        targetValue = 1f,
-        animationSpec = tween(durationMillis = 3000),
-    )
-    val isEndContentFullyRevealed = (endContentRevealFraction == 1f)
+    val isEndContentFullyRevealed = (animatable.value == 1f)
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
@@ -38,7 +36,7 @@ fun CircularReveal(
             startContent()
         }
         Box(
-            modifier = Modifier.circleClip(radiusFraction = endContentRevealFraction),
+            modifier = Modifier.circleClip(radiusFraction = animatable.value),
             content = endContent,
         )
     }
@@ -69,6 +67,7 @@ private fun Modifier.circleClip(
 @Preview
 @Composable
 private fun Preview() {
+    val animatable = remember { Animatable(0f) }
     val startContent: @Composable BoxScope.() -> Unit = {
         Box(
             modifier = Modifier
@@ -84,7 +83,14 @@ private fun Preview() {
         )
     }
     CircularReveal(
+        animatable = animatable,
         startContent = startContent,
         endContent = endContent,
     )
+    LaunchedEffect(Unit) {
+        animatable.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(3000),
+        )
+    }
 }
