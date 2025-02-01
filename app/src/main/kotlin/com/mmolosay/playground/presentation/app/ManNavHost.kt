@@ -22,7 +22,7 @@ fun MainNavHost(
         composable(route = "home") {
             val viewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(
-                viewModel = viewModel,
+//                viewModel = viewModel,
             )
         }
         composable(route = "secondScreen") {
