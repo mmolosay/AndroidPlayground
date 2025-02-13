@@ -3,7 +3,6 @@ package com.mmolosay.playground.presentation.home
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
@@ -25,49 +23,24 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.hypot
 
-@Composable
-fun CircularReveal(
-    progress: Float,
-    startContent: @Composable () -> Unit,
-    endContent: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-    position: (Size) -> Offset = { it.center },
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        startContent()
-        Box(
-            modifier = Modifier
-                .circleClip(
-                    center = position,
-                    radiusFraction = progress,
-                ),
-        ) {
-            endContent()
-        }
-    }
-}
-
 class CircularRevealAnimator(
     val progressAnimatable: Animatable<Float, AnimationVector1D> =
         Animatable(initialValue = FullyCollapsedValue),
-    private val defaultAnimationSpec: () -> AnimationSpec<Float> =
-        { spring(stiffness = Spring.StiffnessLow) },
+    private val animationSpec: AnimationSpec<Float> =
+        spring(stiffness = 100f),
 ) {
 
     suspend fun expand() {
         progressAnimatable.animateTo(
             targetValue = FullyExpandedValue,
-            animationSpec = defaultAnimationSpec(),
+            animationSpec = animationSpec,
         )
     }
 
     suspend fun collapse() {
         progressAnimatable.animateTo(
             targetValue = FullyCollapsedValue,
-            animationSpec = defaultAnimationSpec(),
+            animationSpec = animationSpec,
         )
     }
 
@@ -77,12 +50,12 @@ class CircularRevealAnimator(
     }
 }
 
-fun Modifier.circleClip(
+fun Modifier.clipCircle(
     center: (Size) -> Offset,
-    radiusFraction: Float,
+    coveringRadiusFraction: Float,
 ): Modifier =
     drawWithCache {
-        require(radiusFraction in 0f..1f)
+        require(coveringRadiusFraction in 0f..1f)
         val path = Path()
         val center = center(this.size)
         val radiusOfCoveringCircle = center.radiusOfCoveringCircle(this.size.toRect())
@@ -91,7 +64,7 @@ fun Modifier.circleClip(
             path.rewind()
             val circleRect = Rect(
                 center = center,
-                radius = radiusOfCoveringCircle * radiusFraction,
+                radius = radiusOfCoveringCircle * coveringRadiusFraction,
             )
             path.addOval(circleRect)
 
@@ -124,9 +97,9 @@ private fun Offset.radiusOfCoveringCircle(rect: Rect): Float {
 @Composable
 private fun Preview() {
     val animator = remember { CircularRevealAnimator() }
-    val startContent: @Composable () -> Unit = {
+    val startContent: @Composable (Modifier) -> Unit = { modifier ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(Color.Blue),
         )
@@ -138,11 +111,15 @@ private fun Preview() {
                 .background(Color.Green),
         )
     }
-    CircularReveal(
-        progress = animator.progressAnimatable.value,
-        startContent = startContent,
-        endContent = endContent,
-    )
+    Box {
+        endContent()
+        startContent(
+            Modifier.clipCircle(
+                center = { size -> size.center },
+                coveringRadiusFraction = animator.progressAnimatable.value,
+            )
+        )
+    }
     LaunchedEffect(Unit) {
         animator.expand()
     }
