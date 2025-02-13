@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.app
+package io.github.mmolosay.playground.presentation.app
 
 import android.graphics.Color
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.mmolosay.playground.presentation.design.PlaygroundTheme
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.mmolosay.playground.presentation.design.PlaygroundTheme
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

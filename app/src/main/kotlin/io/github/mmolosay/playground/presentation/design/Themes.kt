@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.design
+package io.github.mmolosay.playground.presentation.design
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

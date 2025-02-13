@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.mmolosay.playground"
+    namespace = "io.github.mmolosay.playground"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.mmolosay.playground"
+        applicationId = "io.github.mmolosay.playground"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
     }

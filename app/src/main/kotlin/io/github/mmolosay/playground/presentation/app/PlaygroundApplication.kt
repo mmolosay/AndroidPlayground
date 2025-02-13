@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.app
+package io.github.mmolosay.playground.presentation.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

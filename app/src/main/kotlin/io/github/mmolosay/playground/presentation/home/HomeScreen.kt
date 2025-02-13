@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.home
+package io.github.mmolosay.playground.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mmolosay.playground.presentation.design.PlaygroundTheme
+import io.github.mmolosay.playground.presentation.design.PlaygroundTheme
 
 @Composable
 fun HomeScreen(

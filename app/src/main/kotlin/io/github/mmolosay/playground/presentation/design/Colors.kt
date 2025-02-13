@@ -1,4 +1,4 @@
-package com.mmolosay.playground.presentation.design
+package io.github.mmolosay.playground.presentation.design
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
