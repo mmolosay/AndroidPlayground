@@ -1,13 +1,13 @@
-package io.github.mmolosay.playground.presentation.design
+package io.github.mmolosay.playground.presentation.tv.design
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.ColorScheme as MaterialColorScheme
+import androidx.tv.material3.darkColorScheme
+import androidx.tv.material3.lightColorScheme
+import androidx.tv.material3.ColorScheme as MaterialColorScheme
 
 @Composable
-fun getColorScheme(theme: Theme): MaterialColorScheme =
+fun getColorScheme(theme: Theme) =
     when (theme) {
         Theme.Light -> getColorScheme(useDark = false)
         Theme.Dark -> getColorScheme(useDark = true)

@@ -7,6 +7,8 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
+import io.github.mmolosay.playground.presentation.tv.design.Theme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,8 +34,8 @@ class MainActivity : ComponentActivity() {
 
     private fun setContent() =
         setContent {
-//            PlaygroundTheme {
-//                Application()
-//            }
+            PlaygroundTheme(theme = Theme.Dark) {
+
+            }
         }
 }
