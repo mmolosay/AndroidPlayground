@@ -3,10 +3,9 @@
 androidGradlePlugin = "8.2.1"
 
 # Android
-compileSdk = "34"
-targetSdk = "34"
+compileSdk = "35"
+targetSdk = "35"
 minSdk = "24"
-buildTools = "34.0.0"
 
 # Kotlin
 kotlin = "1.9.10"
@@ -15,12 +14,15 @@ ksp = "1.9.10-1.0.13"
 coroutines = "1.7.2"
 
 # AndroidX
-androidx-core-coreKtx = "1.12.0"
-androidx-appcompat = "1.6.1"
+androidx-core-coreKtx = "1.15.0"
+androidx-appcompat = "1.7.0"
+androidx-lifecycle = "2.8.7"
 
 # Compose
 compose-bom = "2024.02.02" # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-compiler = "1.5.3" # https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+compose-tv-foundation = "1.0.0-alpha12"
+compose-tv-material = "1.0.0"
 
 # Dagger & Hilt
 hilt = "2.50"
@@ -42,3 +44,4 @@ kotestAssertions = "5.5.5"
 # Misc (preserve alphabetical order)
 mmolosayDebounce = "1.2.0"
 valentinilkShimmer = "1.2.0"
+agp = "8.2.1"
