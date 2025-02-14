@@ -83,6 +83,9 @@ internal fun Menu(
                 useAfterimageAppearance = useAfterimageAppearance,
                 onFocusChanged = {
                     doesMainMenuHaveFocus = it.hasFocus
+                    if (doesMainMenuHaveFocus && data.menuState.isSportMenuOpen && data.menuState.isMenuOpen) {
+                        data.toggleSportMenu(open = false)
+                    }
                 },
             )
 
