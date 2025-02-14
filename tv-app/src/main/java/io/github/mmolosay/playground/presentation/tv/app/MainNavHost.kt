@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import io.github.mmolosay.playground.presentation.tv.home.HomeScreen
 import io.github.mmolosay.playground.presentation.tv.home.HomeViewModel
+import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel
+import io.github.mmolosay.playground.presentation.tv.home.menu.ui.MenuScreen
 
 @Composable
 fun MainNavHost(
@@ -17,11 +19,17 @@ fun MainNavHost(
     NavHost(
         modifier = Modifier.fillMaxSize(),
         navController = navController,
-        startDestination = "home",
+        startDestination = "menu",
     ) {
         composable(route = "home") {
             val viewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(
+                viewModel = viewModel,
+            )
+        }
+        composable(route = "menu") {
+            val viewModel = hiltViewModel<MenuViewModel>()
+            MenuScreen(
                 viewModel = viewModel,
             )
         }

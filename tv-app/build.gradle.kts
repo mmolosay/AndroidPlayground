@@ -56,7 +56,9 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation("androidx.tv:tv-material:${libs.versions.compose.tv.material.get()}")
+    // at the moment, tv-material lacks lots of fundamental stuff (like proper ripple)
+    implementation("androidx.compose.material3:material3")
+//    implementation("androidx.tv:tv-material:${libs.versions.compose.tv.material.get()}")
     implementation("androidx.tv:tv-foundation:${libs.versions.compose.tv.foundation.get()}")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
