@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -39,14 +40,13 @@ android {
     kapt {
         correctErrorTypes = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 @Suppress("SpellCheckingInspection")
 dependencies {
+
+    // Kotlin
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${libs.versions.coroutines.get()}")
 
     // Jetpack
     implementation("androidx.appcompat:appcompat:${libs.versions.androidx.appcompat.get()}")
