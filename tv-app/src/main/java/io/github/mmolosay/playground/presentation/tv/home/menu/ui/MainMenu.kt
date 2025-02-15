@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +44,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
 import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
@@ -76,7 +75,6 @@ internal fun MainMenu(
             }
             .focusGroup(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items.forEach { item ->
             Item(
@@ -132,13 +130,16 @@ private fun Item(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) IconSection@{
+            // counterweight to bottom indicator so that Icon() appears in the middle of the Item()
+            Spacer(Modifier.size(IndicatorContainerSize))
+
             val iconTint = when {
                 useAfterimageAppearance -> Concrete.copy(alpha = 0.3f)
                 item.isSelected -> Chalk
@@ -150,10 +151,9 @@ private fun Item(
                 contentDescription = item.title, // in case if title's Text() is not shown
                 tint = iconTint,
             )
+
             Column(
-                modifier = Modifier
-                    .width(12.dp)
-                    .height(4.dp), // 2dp Spacer + 2dp indicator height
+                modifier = Modifier.size(IndicatorContainerSize),
             ) {
                 val showIndicator = if (isSelfOrSiblingItemFocused) {
                     isFocused && !useAfterimageAppearance
@@ -161,12 +161,8 @@ private fun Item(
                     item.isSelected && !useAfterimageAppearance
                 }
                 if (showIndicator) {
-                    Spacer(Modifier.height(2.dp))
-                    ItemIconSelectionIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(2.dp)
-                    )
+                    Spacer(Modifier.height(IndicatorSpacing))
+                    ItemIconSelectionIndicator()
                 }
             }
         }
@@ -187,14 +183,18 @@ private fun Item(
     }
 }
 
+private val IndicatorSize = DpSize(width = 12.dp, height = 2.dp)
+private val IndicatorSpacing = 2.dp
+private val IndicatorContainerSize = DpSize(
+    width = IndicatorSize.width,
+    height = IndicatorSize.height + IndicatorSpacing,
+)
+
 @Composable
-private fun ItemIconSelectionIndicator(
-    modifier: Modifier,
-) {
-    val contentColor = LocalContentColor.current
-    Canvas(modifier) {
+private fun ItemIconSelectionIndicator() {
+    Canvas(Modifier.size(IndicatorSize)) {
         drawRect(
-            color = contentColor,
+            color = Chalk,
             topLeft = Offset.Zero,
             size = this.size,
             style = Fill,
