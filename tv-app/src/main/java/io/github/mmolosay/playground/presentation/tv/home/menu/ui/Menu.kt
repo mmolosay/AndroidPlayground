@@ -34,7 +34,6 @@ internal fun Menu(
     modifier: Modifier = Modifier,
 ) {
     val backgroundColor = Color.LightGray.copy(alpha = 0.30f)
-    val wholeMenuFocusRequester = remember { FocusRequester() }
     val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
     val composeSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
@@ -42,7 +41,7 @@ internal fun Menu(
     fun focusRequester(): FocusRequester =
         when {
             composeSportMenu -> sportMenuFocusRequester
-            else -> wholeMenuFocusRequester
+            else -> mainMenuFocusRequester
         }
 
     Box(
@@ -64,7 +63,6 @@ internal fun Menu(
             modifier = modifier
                 .fillMaxHeight()
                 .background(backgroundColor)
-                .focusRequester(wholeMenuFocusRequester)
                 .focusGroup(),
         ) {
             val uiMainMenuItems = data.mainMenu.items.map { item ->
