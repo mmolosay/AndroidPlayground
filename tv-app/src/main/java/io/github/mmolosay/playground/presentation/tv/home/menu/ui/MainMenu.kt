@@ -167,7 +167,8 @@ private fun Item(
             }
         }
 
-        if (!useCollapsedAppearance && !useAfterimageAppearance) {
+        val showTitle = (!useCollapsedAppearance && !useAfterimageAppearance)
+        if (showTitle) {
             Spacer(Modifier.width(12.dp))
             val color = when (isFocused || item.isSelected) {
                 true -> Chalk
