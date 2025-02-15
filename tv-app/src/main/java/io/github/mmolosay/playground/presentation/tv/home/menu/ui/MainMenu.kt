@@ -9,7 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -130,10 +129,8 @@ private fun Item(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val contentColor = LocalContentColor.current
         Column(
-            modifier = Modifier
-                .width(IntrinsicSize.Min), // ItemIconSelectionIndicator()'s Box has fillMaxWidth()
+            modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) IconSection@{
             val iconTint = when {
