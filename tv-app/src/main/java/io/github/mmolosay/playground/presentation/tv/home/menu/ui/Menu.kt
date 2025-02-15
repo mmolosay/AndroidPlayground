@@ -115,6 +115,7 @@ internal fun Menu(
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(Alignment.CenterVertically)
+                        .padding(end = 12.dp)
                         .focusProperties {
                             enter = { sportMenuFocusRequester }
                         },

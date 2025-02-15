@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -50,9 +49,7 @@ internal fun SportMenu(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 24.dp) // TODO: move to caller?
-            .focusGroup(),
+        modifier = modifier.focusGroup(),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
