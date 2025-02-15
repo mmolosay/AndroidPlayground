@@ -35,7 +35,7 @@ internal fun Menu(
     data: MenuData,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = Color.LightGray.copy(alpha = 0.30f)
+    val backgroundColor = Color.Black
     val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
     val composeSportMenu = (data.isMenuOpen && data.sportMenu.isOpen)
