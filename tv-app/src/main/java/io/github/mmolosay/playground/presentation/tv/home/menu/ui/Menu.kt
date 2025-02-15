@@ -25,7 +25,6 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuState
 import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
-import io.github.mmolosay.playground.presentation.tv.home.menu.ui.SportMenu
 
 // TODO: add shadow as in v1
 
@@ -123,9 +122,10 @@ internal fun Menu(
             focusRequester().requestFocus()
         }
     }
-    LaunchedEffect(data.mainMenu.selectedItem) {
-        val isSportsItemSelected = data.mainMenu.selectedItem.type == MainMenuItem.Type.Sports
-        data.toggleSportMenu(open = isSportsItemSelected)
+    LaunchedEffect(data.menuState.isSportMenuOpen) {
+        if (data.menuState.isSportMenuOpen) {
+            focusRequester().requestFocus()
+        }
     }
 }
 
