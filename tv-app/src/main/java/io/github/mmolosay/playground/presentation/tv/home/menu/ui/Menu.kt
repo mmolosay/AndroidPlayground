@@ -64,7 +64,9 @@ internal fun Menu(
                 .focusGroup(),
         ) {
             val uiMainMenuItems = data.mainMenu.items.map { item ->
-                item.toUi(
+                UiMainMenuItem(
+                    icon = item.type.icon(),
+                    title = item.title,
                     isSelected = (item == data.mainMenu.selectedItem),
                     onClick = {
                         data.mainMenu.selectItem(item)
@@ -94,7 +96,8 @@ internal fun Menu(
 
             if (composeSportMenu) {
                 val uiSportMenuItems = data.sportMenu.items.map { item ->
-                    item.toUi(
+                    UiSportMenuItem(
+                        title = item.title,
                         isSelected = (data.sportMenu.selectedItem == item),
                         onClick = { data.sportMenu.selectItem(item) },
                     )

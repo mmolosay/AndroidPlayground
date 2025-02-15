@@ -36,24 +36,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
-import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
 
 internal data class UiSportMenuItem(
     val title: String,
     val isSelected: Boolean,
     val onClick: () -> Unit,
 )
-
-// TODO: abolish
-internal fun SportMenuItem.toUi(
-    isSelected: Boolean,
-    onClick: () -> Unit,
-): UiSportMenuItem =
-    UiSportMenuItem(
-        title = this.title,
-        isSelected = isSelected,
-        onClick = onClick,
-    )
 
 @Composable
 internal fun SportMenu(

@@ -57,18 +57,6 @@ internal data class UiMainMenuItem(
     val onClick: () -> Unit,
 )
 
-// TODO: abolish
-internal fun MainMenuItem.toUi(
-    isSelected: Boolean,
-    onClick: () -> Unit,
-): UiMainMenuItem =
-    UiMainMenuItem(
-        icon = this.type.icon(),
-        title = this.title,
-        isSelected = isSelected,
-        onClick = onClick
-    )
-
 @Composable
 internal fun MainMenu(
     items: List<UiMainMenuItem>,
@@ -206,7 +194,7 @@ private fun ItemIconSelectionIndicator(
     }
 }
 
-private fun MainMenuItem.Type.icon(): ImageVector =
+internal fun MainMenuItem.Type.icon(): ImageVector =
     when (this) {
         MainMenuItem.Type.Home -> Icons.Default.Home
         MainMenuItem.Type.Sports -> Icons.AutoMirrored.Default.List
