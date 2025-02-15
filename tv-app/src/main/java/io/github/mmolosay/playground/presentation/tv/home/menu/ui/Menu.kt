@@ -69,6 +69,18 @@ internal fun Menu(
                 .focusRequester(wholeMenuFocusRequester)
                 .focusGroup(),
         ) {
+            val uiMainMenuItems = kotlin.run {
+                data.mainMenu.items.map { item ->
+                    item.toUi(
+                        isSelected = (item == data.mainMenu.selectedItem),
+                        onClick = {
+                            data.mainMenu.selectItem(item)
+                            val isSportsItem = (item.type == MainMenuItem.Type.Sports)
+                            data.toggleSportMenu(open = isSportsItem)
+                        },
+                    )
+                }
+            }
             val useAfterimageAppearance = kotlin.run {
                 val isMenuOpen = data.menuState.isMenuOpen
                 val isSportMenuOpen = data.menuState.isSportMenuOpen
@@ -78,9 +90,9 @@ internal fun Menu(
                 modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentHeight(Alignment.CenterVertically),
-                data = data.mainMenu,
-                menuState = data.menuState,
+                items = uiMainMenuItems,
                 useAfterimageAppearance = useAfterimageAppearance,
+                useCollapsedAppearance = !data.menuState.isMenuOpen,
                 onFocusChanged = {
                     doesMainMenuHaveFocus = it.hasFocus
                     if (doesMainMenuHaveFocus && data.menuState.isSportMenuOpen && data.menuState.isMenuOpen) {

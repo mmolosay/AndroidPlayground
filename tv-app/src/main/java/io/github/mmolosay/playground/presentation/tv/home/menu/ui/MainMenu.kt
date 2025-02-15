@@ -47,16 +47,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
 import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuState
 
 // TODO: focus currently selected item when MainMenu is composed
 
+internal data class UiMainMenuItem(
+    val icon: ImageVector,
+    val title: String,
+    val isSelected: Boolean,
+    val onClick: () -> Unit,
+)
+
+internal fun MainMenuItem.toUi(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+): UiMainMenuItem =
+    UiMainMenuItem(
+        icon = this.type.icon(),
+        title = this.title,
+        isSelected = isSelected,
+        onClick = onClick
+    )
+
 @Composable
 internal fun MainMenu(
-    data: MenuData.MainMenu,
-    menuState: MenuState,
+    items: List<UiMainMenuItem>,
     useAfterimageAppearance: Boolean,
+    useCollapsedAppearance: Boolean,
     onFocusChanged: (FocusState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -72,14 +88,12 @@ internal fun MainMenu(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
-        data.items.forEach { item ->
+        items.forEach { item ->
             Item(
                 item = item,
-                onClick = { data.selectItem(item) },
-                isSelected = (item == data.selectedItem),
                 isSelfOrSiblingItemFocused = hasFocus,
                 useAfterimageAppearance = useAfterimageAppearance,
-                useCollapsedAppearance = !menuState.isMenuOpen,
+                useCollapsedAppearance = useCollapsedAppearance,
             )
         }
     }
@@ -87,9 +101,7 @@ internal fun MainMenu(
 
 @Composable
 private fun Item(
-    item: MainMenuItem,
-    onClick: () -> Unit,
-    isSelected: Boolean,
+    item: UiMainMenuItem,
     isSelfOrSiblingItemFocused: Boolean,
     useAfterimageAppearance: Boolean,
     useCollapsedAppearance: Boolean,
@@ -101,10 +113,9 @@ private fun Item(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
                 role = Role.Tab,
-                onClick = onClick,
+                onClick = item.onClick,
             ),
         item = item,
-        isSelected = isSelected,
         isFocused = interactionSource.collectIsFocusedAsState().value,
         isSelfOrSiblingItemFocused = isSelfOrSiblingItemFocused,
         useAfterimageAppearance = useAfterimageAppearance,
@@ -114,8 +125,7 @@ private fun Item(
 
 @Composable
 private fun Item(
-    item: MainMenuItem,
-    isSelected: Boolean,
+    item: UiMainMenuItem,
     isFocused: Boolean,
     isSelfOrSiblingItemFocused: Boolean,
     useAfterimageAppearance: Boolean,
@@ -133,13 +143,13 @@ private fun Item(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) IconSection@{
             val iconTint = when {
-                useAfterimageAppearance -> contentColor.copy(alpha = 0.30f)
-                isSelected -> contentColor
-                else -> contentColor.copy(alpha = 0.80f)
+                useAfterimageAppearance -> Concrete.copy(alpha = 0.3f)
+                item.isSelected -> Chalk
+                else -> Concrete
             }
             Icon(
                 modifier = Modifier.size(16.dp),
-                imageVector = item.toImageVector(),
+                imageVector = item.icon,
                 contentDescription = null, // there's accompanying Text besides
                 tint = iconTint,
             )
@@ -151,7 +161,7 @@ private fun Item(
                 val showIndicator = if (isSelfOrSiblingItemFocused) {
                     isFocused && !useAfterimageAppearance
                 } else {
-                    isSelected && !useAfterimageAppearance
+                    item.isSelected && !useAfterimageAppearance
                 }
                 if (showIndicator) {
                     Spacer(Modifier.height(2.dp))
@@ -166,9 +176,9 @@ private fun Item(
 
         if (!useCollapsedAppearance && !useAfterimageAppearance) {
             Spacer(Modifier.width(12.dp))
-            val color = when (isFocused) {
-                true -> contentColor
-                false -> contentColor.copy(alpha = 0.8f)
+            val color = when (isFocused || item.isSelected) {
+                true -> Chalk
+                false -> Concrete
             }
             Text(
                 text = item.title,
@@ -195,8 +205,8 @@ private fun ItemIconSelectionIndicator(
     }
 }
 
-private fun MainMenuItem.toImageVector(): ImageVector =
-    when (this.type) {
+private fun MainMenuItem.Type.icon(): ImageVector =
+    when (this) {
         MainMenuItem.Type.Home -> Icons.Default.Home
         MainMenuItem.Type.Sports -> Icons.AutoMirrored.Default.List
         MainMenuItem.Type.Schedule -> Icons.Default.DateRange
@@ -210,12 +220,9 @@ private fun MainMenu_Closed_Preview() {
     PlaygroundTheme {
         MainMenu(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
-            data = previewData(),
-            menuState = MenuState(
-                isMenuOpen = false,
-                isSportMenuOpen = false,
-            ),
+            items = previewItems(),
             useAfterimageAppearance = false,
+            useCollapsedAppearance = true,
             onFocusChanged = {},
         )
     }
@@ -227,12 +234,9 @@ private fun MainMenu_Closed_Afterimage_Preview() {
     PlaygroundTheme {
         MainMenu(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
-            data = previewData(),
-            menuState = MenuState(
-                isMenuOpen = false,
-                isSportMenuOpen = false,
-            ),
+            items = previewItems(),
             useAfterimageAppearance = true,
+            useCollapsedAppearance = false,
             onFocusChanged = {},
         )
     }
@@ -247,12 +251,9 @@ private fun MainMenu_Open_Preview() {
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .background(MaterialTheme.colorScheme.background),
-            data = previewData(),
-            menuState = MenuState(
-                isMenuOpen = true,
-                isSportMenuOpen = false,
-            ),
+            items = previewItems(),
             useAfterimageAppearance = false,
+            useCollapsedAppearance = false,
             onFocusChanged = {},
         )
         LaunchedEffect(Unit) {
@@ -261,33 +262,36 @@ private fun MainMenu_Open_Preview() {
     }
 }
 
-private fun previewData() =
-    MenuData.MainMenu(
-        selectedItem = MainMenuItem(
-            type = MainMenuItem.Type.Schedule,
+private fun previewItems() =
+    listOf(
+        UiMainMenuItem(
+            icon = MainMenuItem.Type.Home.icon(),
+            title = "Home",
+            isSelected = true,
+            onClick = {},
+        ),
+        UiMainMenuItem(
+            icon = MainMenuItem.Type.Sports.icon(),
+            title = "Sports",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiMainMenuItem(
+            icon = MainMenuItem.Type.Schedule.icon(),
             title = "Schedule",
+            isSelected = false,
+            onClick = {},
         ),
-        items = listOf(
-            MainMenuItem(
-                type = MainMenuItem.Type.Home,
-                title = "Home",
-            ),
-            MainMenuItem(
-                type = MainMenuItem.Type.Sports,
-                title = "Sports",
-            ),
-            MainMenuItem(
-                type = MainMenuItem.Type.Schedule,
-                title = "Schedule",
-            ),
-            MainMenuItem(
-                type = MainMenuItem.Type.LiveTv,
-                title = "Live TV",
-            ),
-            MainMenuItem(
-                type = MainMenuItem.Type.Settings,
-                title = "Settings",
-            ),
+        UiMainMenuItem(
+            icon = MainMenuItem.Type.LiveTv.icon(),
+            title = "Live TV",
+            isSelected = false,
+            onClick = {},
         ),
-        selectItem = {},
+        UiMainMenuItem(
+            icon = MainMenuItem.Type.Settings.icon(),
+            title = "Settings",
+            isSelected = false,
+            onClick = {},
+        ),
     )
