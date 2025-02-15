@@ -45,6 +45,13 @@ internal fun Menu(
         modifier = Modifier
             .onFocusChanged {
                 data.toggleMenu(open = it.isFocused || it.hasFocus)
+                if (it.isFocused) {
+                    val isSelectedMainMenuItemASportsItem =
+                        (data.mainMenu.selectedItem.type == MainMenuItem.Type.Sports)
+                    if (isSelectedMainMenuItemASportsItem) {
+                        data.toggleSportMenu(open = true)
+                    }
+                }
             }
             .focusable(),
     ) {
