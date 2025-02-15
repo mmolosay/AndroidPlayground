@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
 import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuState
 import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
 
 // TODO: add shadow as in v1
@@ -38,7 +37,7 @@ internal fun Menu(
     val backgroundColor = Color.LightGray.copy(alpha = 0.30f)
     val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
-    val composeSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
+    val composeSportMenu = (data.isMenuOpen && data.sportMenu.isOpen)
 
     fun focusRequester(): FocusRequester =
         when {
@@ -60,7 +59,6 @@ internal fun Menu(
             }
             .focusable(),
     ) {
-
         Row(
             modifier = modifier
                 .fillMaxHeight()
@@ -79,11 +77,6 @@ internal fun Menu(
                     },
                 )
             }
-            val useAfterimageAppearance = kotlin.run {
-                val isMenuOpen = data.menuState.isMenuOpen
-                val isSportMenuOpen = data.menuState.isSportMenuOpen
-                (isMenuOpen && isSportMenuOpen)
-            }
             MainMenu(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -94,10 +87,10 @@ internal fun Menu(
                     },
                 items = uiMainMenuItems,
                 selectedItemFocusRequester = mainMenuFocusRequester,
-                useAfterimageAppearance = useAfterimageAppearance,
-                useCollapsedAppearance = !data.menuState.isMenuOpen,
+                useAfterimageAppearance = (data.isMenuOpen && data.sportMenu.isOpen),
+                useCollapsedAppearance = !data.isMenuOpen,
                 onFocusChanged = {
-                    if (it.hasFocus && data.menuState.isSportMenuOpen && data.menuState.isMenuOpen) {
+                    if (it.hasFocus && data.sportMenu.isOpen && data.isMenuOpen) {
                         data.toggleSportMenu(open = false)
                     }
                 },
@@ -126,13 +119,13 @@ internal fun Menu(
         }
     }
 
-    LaunchedEffect(data.menuState.isMenuOpen) {
-        if (data.menuState.isMenuOpen) {
+    LaunchedEffect(data.isMenuOpen) {
+        if (data.isMenuOpen) {
             focusRequester().requestFocus()
         }
     }
-    LaunchedEffect(data.menuState.isSportMenuOpen) {
-        if (data.menuState.isSportMenuOpen) {
+    LaunchedEffect(data.sportMenu.isOpen) {
+        if (data.sportMenu.isOpen) {
             focusRequester().requestFocus()
         }
     }
@@ -155,6 +148,7 @@ private fun Preview() =
 @Suppress("SpellCheckingInspection")
 private fun previewData() =
     MenuData(
+        isMenuOpen = false,
         mainMenu = MenuData.MainMenu(
             selectedItem = MainMenuItem(
                 type = MainMenuItem.Type.Home,
@@ -185,6 +179,7 @@ private fun previewData() =
             selectItem = {},
         ),
         sportMenu = MenuData.SportMenu(
+            isOpen = false,
             selectedItem = SportMenuItem(
                 id = "boxing",
                 title = "Boxing",
@@ -220,10 +215,6 @@ private fun previewData() =
                 ),
             ),
             selectItem = {},
-        ),
-        menuState = MenuState(
-            isMenuOpen = true,
-            isSportMenuOpen = false,
         ),
         toggleMenu = {},
         toggleSportMenu = {},

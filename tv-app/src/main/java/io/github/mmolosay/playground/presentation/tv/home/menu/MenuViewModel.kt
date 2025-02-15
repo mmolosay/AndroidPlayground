@@ -88,18 +88,16 @@ class MenuViewModel @Inject constructor() : ViewModel() {
                 ),
             )
             MenuData.SportMenu(
+                isOpen = false,
                 selectedItem = items.first(),
                 items = items,
                 selectItem = ::setSelectedSportMenuItem,
             )
         }
         return MenuData(
+            isMenuOpen = false,
             mainMenu = mainMenu,
             sportMenu = sportMenu,
-            menuState = MenuState(
-                isMenuOpen = false,
-                isSportMenuOpen = false,
-            ),
             toggleMenu = ::toggleMenu,
             toggleSportMenu = ::toggleSportMenu,
         )
@@ -121,15 +119,14 @@ class MenuViewModel @Inject constructor() : ViewModel() {
 
     private fun toggleMenu(open: Boolean) {
         _dataStateFlow.updateData { currentData ->
-            val newMenuState = currentData.menuState.copy(isMenuOpen = open)
-            return@updateData currentData.copy(menuState = newMenuState)
+            return@updateData currentData.copy(isMenuOpen = open)
         }
     }
 
     private fun toggleSportMenu(open: Boolean) {
         _dataStateFlow.updateData { currentData ->
-            val newMenuState = currentData.menuState.copy(isSportMenuOpen = open)
-            return@updateData currentData.copy(menuState = newMenuState)
+            val newSportMenu = currentData.sportMenu.copy(isOpen = open)
+            return@updateData currentData.copy(sportMenu = newSportMenu)
         }
     }
 

@@ -1,9 +1,9 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu
 
 data class MenuData(
+    val isMenuOpen: Boolean,
     val mainMenu: MainMenu,
     val sportMenu: SportMenu,
-    val menuState: MenuState,
 
     val toggleMenu: ToggleMenuStateAction,
     val toggleSportMenu: ToggleMenuStateAction,
@@ -20,6 +20,7 @@ data class MenuData(
     }
 
     data class SportMenu(
+        val isOpen: Boolean,
         val selectedItem: SportMenuItem?,
         val items: List<SportMenuItem>,
         val selectItem: SelectItemAction,
@@ -50,9 +51,4 @@ data class MainMenuItem(
 data class SportMenuItem(
     val id: String,
     val title: String,
-)
-
-data class MenuState(
-    val isMenuOpen: Boolean,
-    val isSportMenuOpen: Boolean,
 )
