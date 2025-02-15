@@ -48,8 +48,6 @@ import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
 import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
 
-// TODO: focus currently selected item when MainMenu is composed
-
 internal data class UiMainMenuItem(
     val icon: ImageVector,
     val title: String,
@@ -60,6 +58,7 @@ internal data class UiMainMenuItem(
 @Composable
 internal fun MainMenu(
     items: List<UiMainMenuItem>,
+    selectedItemFocusRequester: FocusRequester,
     useAfterimageAppearance: Boolean,
     useCollapsedAppearance: Boolean,
     onFocusChanged: (FocusState) -> Unit,
@@ -80,6 +79,7 @@ internal fun MainMenu(
         items.forEach { item ->
             Item(
                 item = item,
+                selectedItemFocusRequester = selectedItemFocusRequester,
                 isSelfOrSiblingItemFocused = hasFocus,
                 useAfterimageAppearance = useAfterimageAppearance,
                 useCollapsedAppearance = useCollapsedAppearance,
@@ -91,6 +91,7 @@ internal fun MainMenu(
 @Composable
 private fun Item(
     item: UiMainMenuItem,
+    selectedItemFocusRequester: FocusRequester,
     isSelfOrSiblingItemFocused: Boolean,
     useAfterimageAppearance: Boolean,
     useCollapsedAppearance: Boolean,
@@ -98,6 +99,10 @@ private fun Item(
     val interactionSource = remember { MutableInteractionSource() }
     Item(
         modifier = Modifier
+            .run {
+                if (item.isSelected) focusRequester(selectedItemFocusRequester)
+                else this
+            }
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
@@ -210,6 +215,7 @@ private fun MainMenu_Closed_Preview() {
         MainMenu(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
             items = previewItems(),
+            selectedItemFocusRequester = remember { FocusRequester() },
             useAfterimageAppearance = false,
             useCollapsedAppearance = true,
             onFocusChanged = {},
@@ -224,6 +230,7 @@ private fun MainMenu_Closed_Afterimage_Preview() {
         MainMenu(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
             items = previewItems(),
+            selectedItemFocusRequester = remember { FocusRequester() },
             useAfterimageAppearance = true,
             useCollapsedAppearance = false,
             onFocusChanged = {},
@@ -241,6 +248,7 @@ private fun MainMenu_Open_Preview() {
                 .focusRequester(focusRequester)
                 .background(MaterialTheme.colorScheme.background),
             items = previewItems(),
+            selectedItemFocusRequester = remember { FocusRequester() },
             useAfterimageAppearance = false,
             useCollapsedAppearance = false,
             onFocusChanged = {},

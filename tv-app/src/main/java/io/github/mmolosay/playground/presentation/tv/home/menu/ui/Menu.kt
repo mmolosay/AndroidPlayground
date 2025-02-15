@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,7 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
 
 // TODO: add shadow as in v1
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun Menu(
     data: MenuData,
@@ -32,6 +35,7 @@ internal fun Menu(
 ) {
     val backgroundColor = Color.LightGray.copy(alpha = 0.30f)
     val wholeMenuFocusRequester = remember { FocusRequester() }
+    val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
     val composeSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
 
@@ -83,8 +87,12 @@ internal fun Menu(
             MainMenu(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .wrapContentHeight(Alignment.CenterVertically),
+                    .wrapContentHeight(Alignment.CenterVertically)
+                    .focusProperties {
+                        enter = { mainMenuFocusRequester }
+                    },
                 items = uiMainMenuItems,
+                selectedItemFocusRequester = mainMenuFocusRequester,
                 useAfterimageAppearance = useAfterimageAppearance,
                 useCollapsedAppearance = !data.menuState.isMenuOpen,
                 onFocusChanged = {
