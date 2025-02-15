@@ -141,7 +141,7 @@ private fun Item(
             Icon(
                 modifier = Modifier.size(16.dp),
                 imageVector = item.icon,
-                contentDescription = null, // there's accompanying Text besides
+                contentDescription = item.title, // in case if title's Text() is not shown
                 tint = iconTint,
             )
             Column(
