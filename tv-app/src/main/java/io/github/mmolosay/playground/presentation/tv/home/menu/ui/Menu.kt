@@ -112,8 +112,11 @@ internal fun Menu(
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(Alignment.CenterVertically)
-                        .focusRequester(sportMenuFocusRequester),
+                        .focusProperties {
+                            enter = { sportMenuFocusRequester }
+                        },
                     items = uiSportMenuItems,
+                    selectedItemFocusRequester = sportMenuFocusRequester,
                 )
             }
         }

@@ -46,6 +46,7 @@ internal data class UiSportMenuItem(
 @Composable
 internal fun SportMenu(
     items: List<UiSportMenuItem>,
+    selectedItemFocusRequester: FocusRequester,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -60,6 +61,7 @@ internal fun SportMenu(
             .forEach { item ->
                 Item(
                     item = item,
+                    selectedItemFocusRequester = selectedItemFocusRequester,
                 )
             }
     }
@@ -68,10 +70,15 @@ internal fun SportMenu(
 @Composable
 private fun Item(
     item: UiSportMenuItem,
+    selectedItemFocusRequester: FocusRequester,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Item(
         modifier = Modifier
+            .run {
+                if (item.isSelected) focusRequester(selectedItemFocusRequester)
+                else this
+            }
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
@@ -144,6 +151,7 @@ private fun SportMenu_Preview() {
                 .focusRequester(focusRequester)
                 .background(Color.Black),
             items = previewItems(),
+            selectedItemFocusRequester = remember { FocusRequester() },
         )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
