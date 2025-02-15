@@ -1,5 +1,6 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -63,6 +64,7 @@ internal fun Menu(
             modifier = modifier
                 .fillMaxHeight()
                 .background(backgroundColor)
+                .animateContentSize()
                 .focusGroup(),
         ) {
             val uiMainMenuItems = data.mainMenu.items.map { item ->
