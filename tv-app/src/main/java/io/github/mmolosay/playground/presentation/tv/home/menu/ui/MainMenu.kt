@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.DateRange
@@ -34,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
@@ -66,14 +69,14 @@ internal fun MainMenu(
     var hasFocus by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
-            .padding(horizontal = 24.dp) // TODO: move to caller?
+            .width(IntrinsicSize.Min) // due to 'fillMaxWidth()' inside Item()
             .onFocusChanged {
                 hasFocus = it.hasFocus
                 onFocusChanged(it)
             }
             .focusGroup(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items.forEach { item ->
             Item(
@@ -98,10 +101,12 @@ private fun Item(
     val interactionSource = remember { MutableInteractionSource() }
     Item(
         modifier = Modifier
+            .fillMaxWidth()
             .run {
                 if (item.isSelected) focusRequester(selectedItemFocusRequester)
                 else this
             }
+            .clip(shape = RoundedCornerShape(size = 6.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
@@ -126,7 +131,8 @@ private fun Item(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
