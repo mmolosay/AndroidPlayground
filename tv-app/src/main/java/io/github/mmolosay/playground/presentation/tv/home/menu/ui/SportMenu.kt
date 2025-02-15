@@ -31,7 +31,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
@@ -51,16 +50,14 @@ internal fun SportMenu(
     Column(
         modifier = modifier.focusGroup(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(18.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items
-            .take(4) // TODO: remove
-            .forEach { item ->
-                Item(
-                    item = item,
-                    selectedItemFocusRequester = selectedItemFocusRequester,
-                )
-            }
+        items.forEach { item ->
+            Item(
+                item = item,
+                selectedItemFocusRequester = selectedItemFocusRequester,
+            )
+        }
     }
 }
 
@@ -101,14 +98,14 @@ private fun Item(
         Box(
             modifier = Modifier
                 .width(2.dp)
-                .fillMaxHeight(),
+                .fillMaxHeight(fraction = 0.60f),
         ) {
             if (isFocused) {
                 ItemIconSelectionIndicator()
             }
         }
 
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(6.dp))
         val color = when (item.isSelected) {
             true -> Chalk
             false -> Concrete
@@ -117,7 +114,6 @@ private fun Item(
             text = item.title,
             color = color,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyMedium,
         )
     }
