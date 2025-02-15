@@ -36,12 +36,28 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
 import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
+
+internal data class UiSportMenuItem(
+    val title: String,
+    val isSelected: Boolean,
+    val onClick: () -> Unit,
+)
+
+// TODO: abolish
+internal fun SportMenuItem.toUi(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+): UiSportMenuItem =
+    UiSportMenuItem(
+        title = this.title,
+        isSelected = isSelected,
+        onClick = onClick,
+    )
 
 @Composable
 internal fun SportMenu(
-    data: MenuData.SportMenu,
+    items: List<UiSportMenuItem>,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -51,12 +67,11 @@ internal fun SportMenu(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
-        data.items
-            .take(4) // TODO:
+        items
+            .take(4) // TODO: remove
             .forEach { item ->
                 Item(
                     item = item,
-                    isSelected = (item == data.selectedItem),
                 )
             }
     }
@@ -64,8 +79,7 @@ internal fun SportMenu(
 
 @Composable
 private fun Item(
-    item: SportMenuItem,
-    isSelected: Boolean,
+    item: UiSportMenuItem,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Item(
@@ -74,18 +88,16 @@ private fun Item(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
                 role = Role.Tab,
-                onClick = { /* TODO: implement me */ },
+                onClick = item.onClick,
             ),
         item = item,
-        isSelected = isSelected,
         isFocused = interactionSource.collectIsFocusedAsState().value,
     )
 }
 
 @Composable
 private fun Item(
-    item: SportMenuItem,
-    isSelected: Boolean,
+    item: UiSportMenuItem,
     isFocused: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -105,10 +117,9 @@ private fun Item(
         }
 
         Spacer(Modifier.width(12.dp))
-        val contentColor = LocalContentColor.current
-        val color = when (isSelected) {
-            true -> contentColor
-            false -> contentColor.copy(alpha = 0.80f)
+        val color = when (item.isSelected) {
+            true -> Chalk
+            false -> Concrete
         }
         Text(
             text = item.title,
@@ -144,7 +155,7 @@ private fun SportMenu_Preview() {
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .background(Color.Black),
-            data = previewData(),
+            items = previewItems(),
         )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -152,40 +163,41 @@ private fun SportMenu_Preview() {
     }
 }
 
-private fun previewData() =
-    MenuData.SportMenu(
-        selectedItem = SportMenuItem(
-            id = "boxing",
-            title = "Boxing",
+private fun previewItems() =
+    listOf(
+        UiSportMenuItem(
+            title = "NFL",
+            isSelected = true,
+            onClick = {},
         ),
-        items = listOf(
-            SportMenuItem(
-                id = "nfl",
-                title = "NFL",
-            ),
-            SportMenuItem(
-                id = "boxing",
-                title = "Boxing",
-            ),
-            SportMenuItem(
-                id = "Women's Football",
-                title = "women-football",
-            ),
-            SportMenuItem(
-                id = "soccer",
-                title = "Soccer",
-            ),
-            SportMenuItem(
-                id = "mma",
-                title = "MMA",
-            ),
-            SportMenuItem(
-                id = "smth-longer",
-                title = "Something longer",
-            ),
-            SportMenuItem(
-                id = "smth-even-more-longer",
-                title = "Something even more longer",
-            ),
-        )
+        UiSportMenuItem(
+            title = "Boxing",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiSportMenuItem(
+            title = "women-football",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiSportMenuItem(
+            title = "Soccer",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiSportMenuItem(
+            title = "MMA",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiSportMenuItem(
+            title = "Something longer",
+            isSelected = false,
+            onClick = {},
+        ),
+        UiSportMenuItem(
+            title = "Something even more longer",
+            isSelected = false,
+            onClick = {},
+        ),
     )

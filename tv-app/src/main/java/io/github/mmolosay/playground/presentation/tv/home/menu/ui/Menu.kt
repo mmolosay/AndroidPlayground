@@ -25,6 +25,7 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuState
 import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
+import io.github.mmolosay.playground.presentation.tv.home.menu.ui.SportMenu
 
 // TODO: add shadow as in v1
 
@@ -69,17 +70,15 @@ internal fun Menu(
                 .focusRequester(wholeMenuFocusRequester)
                 .focusGroup(),
         ) {
-            val uiMainMenuItems = kotlin.run {
-                data.mainMenu.items.map { item ->
-                    item.toUi(
-                        isSelected = (item == data.mainMenu.selectedItem),
-                        onClick = {
-                            data.mainMenu.selectItem(item)
-                            val isSportsItem = (item.type == MainMenuItem.Type.Sports)
-                            data.toggleSportMenu(open = isSportsItem)
-                        },
-                    )
-                }
+            val uiMainMenuItems = data.mainMenu.items.map { item ->
+                item.toUi(
+                    isSelected = (item == data.mainMenu.selectedItem),
+                    onClick = {
+                        data.mainMenu.selectItem(item)
+                        val isSportsItem = (item.type == MainMenuItem.Type.Sports)
+                        data.toggleSportMenu(open = isSportsItem)
+                    },
+                )
             }
             val useAfterimageAppearance = kotlin.run {
                 val isMenuOpen = data.menuState.isMenuOpen
@@ -102,12 +101,18 @@ internal fun Menu(
             )
 
             if (showSportMenu) {
+                val uiSportMenuItems = data.sportMenu.items.map { item ->
+                    item.toUi(
+                        isSelected = (data.sportMenu.selectedItem == item),
+                        onClick = { data.sportMenu.selectItem(item) },
+                    )
+                }
                 SportMenu(
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(Alignment.CenterVertically)
                         .focusRequester(sportMenuFocusRequester),
-                    data = data.sportMenu,
+                    items = uiSportMenuItems,
                 )
             }
         }
@@ -205,6 +210,7 @@ private fun previewData() =
                     title = "Something even more longer",
                 ),
             ),
+            selectItem = {},
         ),
         menuState = MenuState(
             isMenuOpen = true,

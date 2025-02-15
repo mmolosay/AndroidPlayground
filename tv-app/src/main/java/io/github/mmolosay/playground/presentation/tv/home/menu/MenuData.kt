@@ -22,7 +22,12 @@ data class MenuData(
     data class SportMenu(
         val selectedItem: SportMenuItem?,
         val items: List<SportMenuItem>,
-    )
+        val selectItem: SelectItemAction,
+    ) {
+        fun interface SelectItemAction {
+            operator fun invoke(item: SportMenuItem)
+        }
+    }
 
     fun interface ToggleMenuStateAction {
         operator fun invoke(open: Boolean)

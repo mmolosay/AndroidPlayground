@@ -90,6 +90,7 @@ class MenuViewModel @Inject constructor() : ViewModel() {
             MenuData.SportMenu(
                 selectedItem = items.first(),
                 items = items,
+                selectItem = ::setSelectedSportMenuItem,
             )
         }
         return MenuData(
@@ -108,6 +109,13 @@ class MenuViewModel @Inject constructor() : ViewModel() {
         _dataStateFlow.updateData { currentData ->
             val newMainMenu = currentData.mainMenu.copy(selectedItem = item)
             return@updateData currentData.copy(mainMenu = newMainMenu)
+        }
+    }
+
+    private fun setSelectedSportMenuItem(item: SportMenuItem) {
+        _dataStateFlow.updateData { currentData ->
+            val newSportMenu = currentData.sportMenu.copy(selectedItem = item)
+            return@updateData currentData.copy(sportMenu = newSportMenu)
         }
     }
 

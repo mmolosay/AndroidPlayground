@@ -57,6 +57,7 @@ internal data class UiMainMenuItem(
     val onClick: () -> Unit,
 )
 
+// TODO: abolish
 internal fun MainMenuItem.toUi(
     isSelected: Boolean,
     onClick: () -> Unit,
