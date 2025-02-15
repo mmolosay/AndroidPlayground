@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -33,16 +30,9 @@ internal fun Menu(
     data: MenuData,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: rollback backgroundColor
-//    val backgroundColor = when (data.menuState.isMenuOpen) {
-//        true -> Color.Black
-//        false -> Color.Transparent
-//    }
     val backgroundColor = Color.LightGray.copy(alpha = 0.30f)
     val wholeMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
-    var doesWholeMenuHaveFocus by remember { mutableStateOf(false) }
-    var doesMainMenuHaveFocus by remember { mutableStateOf(false) }
     val composeSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
 
     fun focusRequester(): FocusRequester =
@@ -63,9 +53,6 @@ internal fun Menu(
             modifier = modifier
                 .fillMaxHeight()
                 .background(backgroundColor)
-                .onFocusChanged {
-                    doesWholeMenuHaveFocus = it.hasFocus
-                }
                 .focusRequester(wholeMenuFocusRequester)
                 .focusGroup(),
         ) {
@@ -82,7 +69,7 @@ internal fun Menu(
             val useAfterimageAppearance = kotlin.run {
                 val isMenuOpen = data.menuState.isMenuOpen
                 val isSportMenuOpen = data.menuState.isSportMenuOpen
-                (isMenuOpen && isSportMenuOpen && !doesMainMenuHaveFocus)
+                (isMenuOpen && isSportMenuOpen)
             }
             MainMenu(
                 modifier = Modifier
@@ -92,8 +79,7 @@ internal fun Menu(
                 useAfterimageAppearance = useAfterimageAppearance,
                 useCollapsedAppearance = !data.menuState.isMenuOpen,
                 onFocusChanged = {
-                    doesMainMenuHaveFocus = it.hasFocus
-                    if (doesMainMenuHaveFocus && data.menuState.isSportMenuOpen && data.menuState.isMenuOpen) {
+                    if (it.hasFocus && data.menuState.isSportMenuOpen && data.menuState.isMenuOpen) {
                         data.toggleSportMenu(open = false)
                     }
                 },
