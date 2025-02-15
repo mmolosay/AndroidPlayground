@@ -43,11 +43,11 @@ internal fun Menu(
     val sportMenuFocusRequester = remember { FocusRequester() }
     var doesWholeMenuHaveFocus by remember { mutableStateOf(false) }
     var doesMainMenuHaveFocus by remember { mutableStateOf(false) }
-    val showSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
+    val composeSportMenu = (data.menuState.isMenuOpen && data.menuState.isSportMenuOpen)
 
     fun focusRequester(): FocusRequester =
         when {
-            showSportMenu -> sportMenuFocusRequester
+            composeSportMenu -> sportMenuFocusRequester
             else -> wholeMenuFocusRequester
         }
 
@@ -99,7 +99,7 @@ internal fun Menu(
                 },
             )
 
-            if (showSportMenu) {
+            if (composeSportMenu) {
                 val uiSportMenuItems = data.sportMenu.items.map { item ->
                     item.toUi(
                         isSelected = (data.sportMenu.selectedItem == item),
