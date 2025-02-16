@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -110,12 +111,13 @@ internal fun Menu(
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(Alignment.CenterVertically)
-                        .padding(end = 12.dp)
+                        .padding(end = 16.dp)
                         .focusProperties {
                             enter = { sportMenuFocusRequester }
                         },
                     items = uiSportMenuItems,
                     selectedItemFocusRequester = sportMenuFocusRequester,
+                    contentPadding = PaddingValues(vertical = 48.dp),
                 )
             }
         }
