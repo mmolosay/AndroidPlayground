@@ -28,8 +28,6 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
 import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
 
-// TODO: add shadow as in v1
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun Menu(
@@ -49,6 +47,7 @@ internal fun Menu(
 
     Box(
         modifier = Modifier
+            .animateMenuShadow(isMenuOpen = data.isMenuOpen)
             .onFocusChanged {
                 data.toggleMenu(open = it.isFocused || it.hasFocus)
                 if (it.isFocused) {
