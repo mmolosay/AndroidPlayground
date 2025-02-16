@@ -1,10 +1,13 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.gestures.BringIntoViewSpec
+import androidx.compose.foundation.gestures.LocalBringIntoViewSpec
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +26,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,24 +47,29 @@ internal data class UiSportMenuItem(
     val onClick: () -> Unit,
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SportMenu(
     items: List<UiSportMenuItem>,
     selectedItemFocusRequester: FocusRequester,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .verticalScroll(state = rememberScrollState())
-            .focusGroup(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+    CompositionLocalProvider(
+        LocalBringIntoViewSpec provides PivotSpec(parentFraction = 0.5f, childFraction = 0.5f),
     ) {
-        items.forEach { item ->
-            Item(
-                item = item,
-                selectedItemFocusRequester = selectedItemFocusRequester,
-            )
+        Column(
+            modifier = modifier
+                .verticalScroll(state = rememberScrollState())
+                .focusGroup(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items.forEach { item ->
+                Item(
+                    item = item,
+                    selectedItemFocusRequester = selectedItemFocusRequester,
+                )
+            }
         }
     }
 }
@@ -135,6 +144,31 @@ private fun ItemIconSelectionIndicator() {
             size = this.size,
             style = Fill,
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+private class PivotSpec(
+    private val parentFraction: Float = 0.5f,
+    private val childFraction: Float = 0.5f
+) : BringIntoViewSpec {
+
+    override fun calculateScrollDistance(
+        offset: Float, // initial position of item requesting focus
+        size: Float, // size of item requesting focus
+        containerSize: Float, // size of the lazy container
+    ): Float {
+        val childSmallerThanParent = size <= containerSize
+        val initialTargetForLeadingEdge =
+            parentFraction * containerSize - (childFraction * size)
+        val spaceAvailableToShowItem = containerSize - initialTargetForLeadingEdge
+        val targetForLeadingEdge =
+            if (childSmallerThanParent && spaceAvailableToShowItem < size) {
+                containerSize - size
+            } else {
+                initialTargetForLeadingEdge
+            }
+        return offset - targetForLeadingEdge
     }
 }
 
