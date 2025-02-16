@@ -1,21 +1,27 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -50,28 +56,31 @@ enum class MenuDest(val route: String) {
 private fun NavGraphBuilder.home() =
     composable(route = MenuDest.Home.route) {
         // TODO: implement
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+        val focusRequester = remember { FocusRequester() }
+        Row(
+            modifier = Modifier
+                .horizontalScroll(state = rememberScrollState())
+                .focusRequester(focusRequester)
+                .focusGroup(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
-            val interactionSource = remember { MutableInteractionSource() }
-            val backgroundColor = when (interactionSource.collectIsFocusedAsState().value) {
-                true -> Color.Yellow
-                false -> Color.DarkGray
+            repeat(times = 10) { index ->
+                key(index) {
+                    val interactionSource = remember { MutableInteractionSource() }
+                    val isFocused = interactionSource.collectIsFocusedAsState().value
+                    val backgroundColor = if (isFocused) Color.Yellow else Color.LightGray
+                    Box(
+                        modifier = Modifier
+                            .width(180.dp)
+                            .height(100.dp)
+                            .background(backgroundColor)
+                            .focusable(interactionSource = interactionSource)
+                    )
+                }
             }
-            val focusRequester = remember { FocusRequester() }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .fillMaxHeight(0.5f)
-                    .background(backgroundColor)
-                    .focusRequester(focusRequester)
-                    .focusable(interactionSource = interactionSource)
-            )
-            LaunchedEffect(Unit) {
-                focusRequester.requestFocus()
-            }
+        }
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
         }
     }
 
