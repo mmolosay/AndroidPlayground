@@ -26,6 +26,7 @@ class MenuViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    @Suppress("SpellCheckingInspection")
     private fun makeData(): MenuData {
         val mainMenu = kotlin.run {
             val items = listOf(
@@ -60,31 +61,83 @@ class MenuViewModel @Inject constructor() : ViewModel() {
             val items = listOf(
                 SportMenuItem(
                     id = "nfl",
-                    title = "NFL",
+                    title = "1. NFL",
                 ),
                 SportMenuItem(
                     id = "boxing",
-                    title = "Boxing",
+                    title = "2. Boxing",
                 ),
                 SportMenuItem(
                     id = "women-football",
-                    title = "Women's Football",
+                    title = "3. Women's Football",
                 ),
                 SportMenuItem(
                     id = "soccer",
-                    title = "Soccer",
+                    title = "4. Soccer",
                 ),
                 SportMenuItem(
                     id = "mma",
-                    title = "MMA",
+                    title = "5. MMA",
                 ),
                 SportMenuItem(
                     id = "smth-longer",
-                    title = "Something longer",
+                    title = "6. Something longer",
                 ),
                 SportMenuItem(
                     id = "smth-even-more-longer",
-                    title = "Something even more longer",
+                    title = "7. Something even more longer",
+                ),
+                SportMenuItem(
+                    id = "8",
+                    title = "8. Lorem",
+                ),
+                SportMenuItem(
+                    id = "9",
+                    title = "9. ipsum",
+                ),
+                SportMenuItem(
+                    id = "10",
+                    title = "10. dolor sit",
+                ),
+                SportMenuItem(
+                    id = "11",
+                    title = "11. amet",
+                ),
+                SportMenuItem(
+                    id = "12",
+                    title = "12. consectetur",
+                ),
+                SportMenuItem(
+                    id = "13",
+                    title = "13. adipiscing",
+                ),
+                SportMenuItem(
+                    id = "14",
+                    title = "14. elit",
+                ),
+                SportMenuItem(
+                    id = "15",
+                    title = "15. Sed",
+                ),
+                SportMenuItem(
+                    id = "16",
+                    title = "16. dictum",
+                ),
+                SportMenuItem(
+                    id = "17",
+                    title = "17. dui nec",
+                ),
+                SportMenuItem(
+                    id = "18",
+                    title = "18. placerat",
+                ),
+                SportMenuItem(
+                    id = "19",
+                    title = "19. sollicitudin",
+                ),
+                SportMenuItem(
+                    id = "20",
+                    title = "20. magna ",
                 ),
             )
             MenuData.SportMenu(
