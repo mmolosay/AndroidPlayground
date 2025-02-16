@@ -21,6 +21,8 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
@@ -32,8 +34,10 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
 @Composable
 internal fun Menu(
     data: MenuData,
+    menuState: MutableMenuState,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current
     val backgroundColor = Color.Black
     val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
@@ -83,6 +87,12 @@ internal fun Menu(
                 modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentHeight(Alignment.CenterVertically)
+                    .onSizeChanged { size ->
+                        if (!data.isMenuOpen) {
+                            val dpWidth = with(density) { size.width.toDp() }
+                            menuState.collapsedMenuWidth.value = dpWidth
+                        }
+                    }
                     .padding(horizontal = 6.dp)
                     .focusProperties {
                         enter = { mainMenuFocusRequester }
@@ -127,6 +137,9 @@ internal fun Menu(
             focusRequester().requestFocus()
         }
     }
+    LaunchedEffect(data.isMenuOpen) {
+        menuState.isMenuOpen.value = data.isMenuOpen
+    }
     LaunchedEffect(data.sportMenu.isOpen) {
         if (data.sportMenu.isOpen) {
             focusRequester().requestFocus()
@@ -142,6 +155,11 @@ private fun Preview() =
         Menu(
             modifier = Modifier.focusRequester(focusRequester),
             data = previewData(),
+            menuState = remember {
+                MutableMenuState(
+                    isMenuOpen = false,
+                )
+            },
         )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()

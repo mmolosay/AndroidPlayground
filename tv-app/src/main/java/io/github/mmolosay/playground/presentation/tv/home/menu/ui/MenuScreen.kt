@@ -2,8 +2,14 @@ package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
@@ -35,13 +41,34 @@ fun MenuScreen(
 ) {
     Box {
         val menuNavController = rememberNavController()
+        val mutableMenuState = remember {
+            MutableMenuState(
+                isMenuOpen = data.isMenuOpen,
+            )
+        }
         MenuNavHost(
             navController = menuNavController,
+            menuState = mutableMenuState
         )
 
         Menu(
             modifier = Modifier.align(Alignment.TopStart),
             data = data,
+            menuState = mutableMenuState,
         )
     }
+}
+
+@Stable
+internal interface MenuState {
+    val isMenuOpen: State<Boolean>
+    val collapsedMenuWidth: State<Dp?>
+}
+
+@Stable
+internal class MutableMenuState(
+    isMenuOpen: Boolean,
+) : MenuState {
+    override val isMenuOpen: MutableState<Boolean> = mutableStateOf(isMenuOpen)
+    override val collapsedMenuWidth: MutableState<Dp?> = mutableStateOf(null)
 }

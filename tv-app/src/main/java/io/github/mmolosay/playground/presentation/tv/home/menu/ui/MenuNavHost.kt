@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -30,6 +34,7 @@ import androidx.navigation.compose.composable
 @Composable
 internal fun MenuNavHost(
     navController: NavHostController,
+    menuState: MenuState,
 ) {
     NavHost(
         modifier = Modifier.fillMaxSize(),
@@ -37,7 +42,9 @@ internal fun MenuNavHost(
         startDestination = MenuDest.Home.route,
         route = "HOME", // as in v1 // TODO: try different value
     ) {
-        home()
+        home(
+            menuState = menuState,
+        )
         sports()
         schedule()
         liveTv()
@@ -53,12 +60,17 @@ enum class MenuDest(val route: String) {
     Settings("settings"),
 }
 
-private fun NavGraphBuilder.home() =
+private fun NavGraphBuilder.home(
+    menuState: MenuState,
+) =
     composable(route = MenuDest.Home.route) {
         // TODO: implement
         val focusRequester = remember { FocusRequester() }
         Row(
             modifier = Modifier
+                .padding(start = menuState.collapsedMenuWidth.value ?: 0.dp)
+                .padding(start = 16.dp)
+                .padding(top = 16.dp)
                 .horizontalScroll(state = rememberScrollState())
                 .focusRequester(focusRequester)
                 .focusGroup(),
@@ -74,8 +86,15 @@ private fun NavGraphBuilder.home() =
                             .width(180.dp)
                             .height(100.dp)
                             .background(backgroundColor)
-                            .focusable(interactionSource = interactionSource)
-                    )
+                            .focusable(interactionSource = interactionSource),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "$index",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
                 }
             }
         }
