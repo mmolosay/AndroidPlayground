@@ -33,10 +33,10 @@ private val RippleConfiguration =
     RippleConfiguration(
         color = Color.Unspecified,
         rippleAlpha = RippleAlpha(
-            pressedAlpha = 0.10f,
+            pressedAlpha = 0f,
             focusedAlpha = 0f,
             draggedAlpha = 0f,
-            hoveredAlpha = 0.04f,
+            hoveredAlpha = 0f,
         ),
     )
 

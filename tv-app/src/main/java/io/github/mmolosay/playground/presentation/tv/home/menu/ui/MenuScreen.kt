@@ -40,8 +40,7 @@ fun MenuScreen(
         )
 
         Menu(
-            modifier = Modifier
-                .align(Alignment.TopStart),
+            modifier = Modifier.align(Alignment.TopStart),
             data = data,
         )
     }
