@@ -158,6 +158,7 @@ private fun Preview() =
             menuState = remember {
                 MutableMenuState(
                     isMenuOpen = false,
+                    toggleMenuAction = {},
                 )
             },
         )

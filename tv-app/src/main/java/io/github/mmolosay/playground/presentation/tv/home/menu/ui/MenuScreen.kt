@@ -44,6 +44,7 @@ fun MenuScreen(
         val mutableMenuState = remember {
             MutableMenuState(
                 isMenuOpen = data.isMenuOpen,
+                toggleMenuAction = data.toggleMenu::invoke,
             )
         }
         MenuNavHost(
@@ -63,12 +64,18 @@ fun MenuScreen(
 internal interface MenuState {
     val isMenuOpen: State<Boolean>
     val collapsedMenuWidth: State<Dp?>
+
+    fun toggleMenu(open: Boolean)
 }
 
 @Stable
 internal class MutableMenuState(
     isMenuOpen: Boolean,
+    private val toggleMenuAction: (open: Boolean) -> Unit,
 ) : MenuState {
     override val isMenuOpen: MutableState<Boolean> = mutableStateOf(isMenuOpen)
     override val collapsedMenuWidth: MutableState<Dp?> = mutableStateOf(null)
+
+    override fun toggleMenu(open: Boolean) =
+        toggleMenuAction(open)
 }
