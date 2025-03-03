@@ -141,7 +141,7 @@ internal fun Menu(
         menuState.isMenuOpen.value = data.isMenuOpen
     }
     LaunchedEffect(data.sportMenu.isOpen) {
-        if (data.sportMenu.isOpen) {
+        if (data.isMenuOpen) {
             focusRequester().requestFocus()
         }
     }
