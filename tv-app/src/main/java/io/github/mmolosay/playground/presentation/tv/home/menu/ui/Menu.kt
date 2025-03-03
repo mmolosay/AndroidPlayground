@@ -4,6 +4,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -49,6 +51,8 @@ internal fun Menu(
             else -> mainMenuFocusRequester
         }
 
+    val focusInterceptorInteractionSource = remember { MutableInteractionSource() }
+    val isFocusInterceptorFocused = focusInterceptorInteractionSource.collectIsFocusedAsState().value
     Box(
         modifier = Modifier
             .animateMenuShadow(isMenuOpen = data.isMenuOpen)
@@ -62,12 +66,16 @@ internal fun Menu(
                     }
                 }
             }
-            .focusable(),
+            .background(backgroundColor)
+            .run {
+                if (isFocusInterceptorFocused) background(Color.Yellow)
+                else this
+            }
+            .focusable(interactionSource = focusInterceptorInteractionSource),
     ) {
         Row(
             modifier = modifier
                 .fillMaxHeight()
-                .background(backgroundColor)
                 .animateContentSize()
                 .focusGroup(),
         ) {
