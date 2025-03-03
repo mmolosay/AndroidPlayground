@@ -5,13 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel.DataState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class MenuViewModel @Inject constructor() : ViewModel() {
@@ -21,7 +19,6 @@ class MenuViewModel @Inject constructor() : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            delay(2.seconds) // simulates data fetching from server
             _dataStateFlow.value = DataState.Ready(data = makeData())
         }
     }
