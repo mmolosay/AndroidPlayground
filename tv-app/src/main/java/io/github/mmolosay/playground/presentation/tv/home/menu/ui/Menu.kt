@@ -1,5 +1,6 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -127,6 +128,9 @@ internal fun Menu(
                     selectedItemFocusRequester = sportMenuFocusRequester,
                     contentPadding = PaddingValues(vertical = 48.dp),
                 )
+                BackHandler {
+                    data.toggleSportMenu(open = false)
+                }
             }
         }
 
