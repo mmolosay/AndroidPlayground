@@ -1,5 +1,6 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -172,9 +173,11 @@ private fun NavGraphBuilder.home(
             LaunchedEffect(Unit) {
                 focusRequester.requestFocus()
             }
-//            BackHandler {
-//                menuState.toggleMenu(open = true)
-//            }
+            BackHandler(
+                enabled = !menuState.isMenuOpen.value,
+            ) {
+                menuState.toggleMenu(open = true)
+            }
         }
     }
 
