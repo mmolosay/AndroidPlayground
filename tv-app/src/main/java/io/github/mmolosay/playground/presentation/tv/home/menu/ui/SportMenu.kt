@@ -60,22 +60,19 @@ internal fun SportMenu(
     CompositionLocalProvider(
         LocalBringIntoViewSpec provides PivotSpec(parentFraction = 0.5f, childFraction = 0.5f),
     ) {
-        Box(
+        Column(
             modifier = modifier
                 .verticalScroll(state = rememberScrollState())
+                .padding(contentPadding)
                 .focusGroup(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Column(
-                modifier = Modifier.padding(contentPadding),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                items.forEach { item ->
-                    Item(
-                        item = item,
-                        selectedItemFocusRequester = selectedItemFocusRequester,
-                    )
-                }
+            items.forEach { item ->
+                Item(
+                    item = item,
+                    selectedItemFocusRequester = selectedItemFocusRequester,
+                )
             }
         }
     }
@@ -157,7 +154,7 @@ private fun ItemIconSelectionIndicator() {
 @OptIn(ExperimentalFoundationApi::class)
 private class PivotSpec(
     private val parentFraction: Float = 0.5f,
-    private val childFraction: Float = 0.5f
+    private val childFraction: Float = 0.5f,
 ) : BringIntoViewSpec {
 
     override fun calculateScrollDistance(
