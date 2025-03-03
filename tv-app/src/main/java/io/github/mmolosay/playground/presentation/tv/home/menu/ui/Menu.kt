@@ -54,13 +54,6 @@ internal fun Menu(
         modifier = modifier
             .onFocusChanged {
                 data.toggleMenu(open = it.hasFocus)
-                if (it.isFocused) {
-                    val isSelectedMainMenuItemASportsItem =
-                        (data.mainMenu.selectedItem.type == MainMenuItem.Type.Sports)
-                    if (isSelectedMainMenuItemASportsItem) {
-                        data.toggleSportMenu(open = true)
-                    }
-                }
             }
             .focusGroup(),
     ) {
@@ -129,6 +122,8 @@ internal fun Menu(
                     contentPadding = PaddingValues(vertical = 48.dp),
                 )
                 BackHandler {
+                    // move focus before removing element with focus from composition
+                    mainMenuFocusRequester.requestFocus()
                     data.toggleSportMenu(open = false)
                 }
             }
@@ -140,10 +135,19 @@ internal fun Menu(
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .run {
-                    if (isFocusInterceptorFocused) background(Color.Yellow)
-                    else this
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        val isSelectedMainMenuItemASportsItem =
+                            (data.mainMenu.selectedItem.type == MainMenuItem.Type.Sports)
+                        if (isSelectedMainMenuItemASportsItem) {
+                            data.toggleSportMenu(open = true)
+                        }
+                    }
                 }
+//                .run {
+//                    if (isFocusInterceptorFocused) background(Color.Yellow)
+//                    else this
+//                }
                 .focusable(interactionSource = focusInterceptorInteractionSource),
         )
     }
