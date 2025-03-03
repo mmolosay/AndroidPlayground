@@ -1,6 +1,5 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -40,7 +39,6 @@ internal fun Menu(
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
-    val backgroundColor = Color.Black
     val mainMenuFocusRequester = remember { FocusRequester() }
     val sportMenuFocusRequester = remember { FocusRequester() }
     val composeSportMenu = (data.isMenuOpen && data.sportMenu.isOpen)
@@ -51,11 +49,8 @@ internal fun Menu(
             else -> mainMenuFocusRequester
         }
 
-    val focusInterceptorInteractionSource = remember { MutableInteractionSource() }
-    val isFocusInterceptorFocused = focusInterceptorInteractionSource.collectIsFocusedAsState().value
     Box(
-        modifier = Modifier
-            .animateMenuShadow(isMenuOpen = data.isMenuOpen)
+        modifier = modifier
             .onFocusChanged {
                 data.toggleMenu(open = it.isFocused || it.hasFocus)
                 if (it.isFocused) {
@@ -66,18 +61,14 @@ internal fun Menu(
                     }
                 }
             }
-            .background(backgroundColor)
-            .run {
-                if (isFocusInterceptorFocused) background(Color.Yellow)
-                else this
-            }
-            .focusable(interactionSource = focusInterceptorInteractionSource),
+            .focusGroup(),
     ) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxHeight()
-                .animateContentSize()
-                .focusGroup(),
+//                .animateMenuShadow(isMenuOpen = data.isMenuOpen)
+//                .animateContentSize()
+                .background(Color.Black),
         ) {
             val uiMainMenuItems = data.mainMenu.items.map { item ->
                 UiMainMenuItem(
@@ -138,6 +129,19 @@ internal fun Menu(
                 )
             }
         }
+
+        val focusInterceptorInteractionSource = remember { MutableInteractionSource() }
+        val isFocusInterceptorFocused =
+            focusInterceptorInteractionSource.collectIsFocusedAsState().value
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .run {
+                    if (isFocusInterceptorFocused) background(Color.Yellow)
+                    else this
+                }
+                .focusable(interactionSource = focusInterceptorInteractionSource),
+        )
     }
 
     LaunchedEffect(data.isMenuOpen) {
