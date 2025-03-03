@@ -53,7 +53,7 @@ internal fun Menu(
     Box(
         modifier = modifier
             .onFocusChanged {
-                data.toggleMenu(open = it.isFocused || it.hasFocus)
+                data.toggleMenu(open = it.hasFocus)
                 if (it.isFocused) {
                     val isSelectedMainMenuItemASportsItem =
                         (data.mainMenu.selectedItem.type == MainMenuItem.Type.Sports)
