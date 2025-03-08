@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel
@@ -21,6 +22,7 @@ import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel.Dat
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
+    appNavController: NavController,
 ) {
     val dataState = viewModel.dataStateFlow.collectAsStateWithLifecycle().value
     when (dataState) {
@@ -30,6 +32,7 @@ fun MenuScreen(
         is DataState.Ready -> {
             MenuScreen(
                 data = dataState.data,
+                appNavController = appNavController,
             )
         }
     }
@@ -38,6 +41,7 @@ fun MenuScreen(
 @Composable
 fun MenuScreen(
     data: MenuData,
+    appNavController: NavController,
 ) {
     Box {
         val menuNavController = rememberNavController()
@@ -48,7 +52,8 @@ fun MenuScreen(
             )
         }
         MenuNavHost(
-            navController = menuNavController,
+            appNavController = appNavController,
+            menuNavController = menuNavController,
             menuState = mutableMenuState
         )
 

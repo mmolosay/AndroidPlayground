@@ -144,21 +144,22 @@ internal fun Menu(
                         }
                     }
                 }
-//                .run {
-//                    if (isFocusInterceptorFocused) background(Color.Yellow)
-//                    else this
-//                }
+                .run {
+                    if (isFocusInterceptorFocused) background(Color.Yellow)
+                    else this
+                }
                 .focusable(interactionSource = focusInterceptorInteractionSource),
         )
+    }
+
+    LaunchedEffect(data.isMenuOpen) {
+        menuState.isMenuOpen.value = data.isMenuOpen
     }
 
     LaunchedEffect(data.isMenuOpen) {
         if (data.isMenuOpen) {
             focusRequester().requestFocus()
         }
-    }
-    LaunchedEffect(data.isMenuOpen) {
-        menuState.isMenuOpen.value = data.isMenuOpen
     }
     LaunchedEffect(data.sportMenu.isOpen) {
         if (data.isMenuOpen) {

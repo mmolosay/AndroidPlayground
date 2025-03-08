@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home
+package io.github.mmolosay.playground.presentation.tv.screen.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

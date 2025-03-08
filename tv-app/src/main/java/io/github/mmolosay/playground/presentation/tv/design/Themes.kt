@@ -17,9 +17,10 @@ fun PlaygroundTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colorScheme = getColorScheme(theme),
+        colorScheme = getMaterialColorScheme(theme),
     ) {
         CompositionLocalProvider(
+            LocalPlaygroundColorScheme provides getPlaygroundColorScheme(theme),
             LocalContentColor provides MaterialTheme.colorScheme.onBackground,
             LocalRippleConfiguration provides RippleConfiguration,
         ) {

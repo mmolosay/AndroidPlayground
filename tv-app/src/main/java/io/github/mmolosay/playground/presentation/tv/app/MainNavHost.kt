@@ -7,10 +7,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import io.github.mmolosay.playground.presentation.tv.home.HomeScreen
-import io.github.mmolosay.playground.presentation.tv.home.HomeViewModel
 import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel
 import io.github.mmolosay.playground.presentation.tv.home.menu.ui.MenuScreen
+import io.github.mmolosay.playground.presentation.tv.screen.FocusTestsScreen
+import io.github.mmolosay.playground.presentation.tv.screen.home.HomeScreen
+import io.github.mmolosay.playground.presentation.tv.screen.home.HomeViewModel
 
 @Composable
 fun MainNavHost(
@@ -31,10 +32,13 @@ fun MainNavHost(
             val viewModel = hiltViewModel<MenuViewModel>()
             MenuScreen(
                 viewModel = viewModel,
+                appNavController = navController,
             )
         }
-        composable(route = "settings") {
-            // This destination exists to demonstrate possible navigation structure
+        composable(route = "focus_tests") {
+            FocusTestsScreen(
+                appNavController = navController,
+            )
         }
     }
 }
