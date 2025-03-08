@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu.ui
+package io.github.mmolosay.playground.presentation.tv.menu.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel.DataState
+import io.github.mmolosay.playground.presentation.tv.menu.MenuData
+import io.github.mmolosay.playground.presentation.tv.menu.MenuViewModel
+import io.github.mmolosay.playground.presentation.tv.menu.MenuViewModel.DataState
 
 // TODO: v1 may shows portability pop-up in menu. It's not an appropriate place.
 

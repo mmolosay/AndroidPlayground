@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu.ui
+package io.github.mmolosay.playground.presentation.tv.menu.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
@@ -29,9 +29,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
-import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuData
-import io.github.mmolosay.playground.presentation.tv.home.menu.SportMenuItem
+import io.github.mmolosay.playground.presentation.tv.menu.MainMenuItem
+import io.github.mmolosay.playground.presentation.tv.menu.MenuData
+import io.github.mmolosay.playground.presentation.tv.menu.SportMenuItem
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

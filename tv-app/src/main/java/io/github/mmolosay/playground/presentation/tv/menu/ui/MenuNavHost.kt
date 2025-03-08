@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu.ui
+package io.github.mmolosay.playground.presentation.tv.menu.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box

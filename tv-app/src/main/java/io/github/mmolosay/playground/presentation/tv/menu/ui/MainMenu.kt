@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu.ui
+package io.github.mmolosay.playground.presentation.tv.menu.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.LocalIndication
@@ -45,7 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import io.github.mmolosay.playground.presentation.tv.design.PlaygroundTheme
-import io.github.mmolosay.playground.presentation.tv.home.menu.MainMenuItem
+import io.github.mmolosay.playground.presentation.tv.menu.MainMenuItem
 
 internal data class UiMainMenuItem(
     val icon: ImageVector,

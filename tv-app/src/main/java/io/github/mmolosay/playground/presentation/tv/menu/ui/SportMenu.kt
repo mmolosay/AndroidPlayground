@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu.ui
+package io.github.mmolosay.playground.presentation.tv.menu.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi

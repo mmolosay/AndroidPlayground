@@ -1,4 +1,4 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu
+package io.github.mmolosay.playground.presentation.tv.menu
 
 data class MenuData(
     val isMenuOpen: Boolean,

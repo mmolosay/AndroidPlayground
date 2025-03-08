@@ -7,8 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel
-import io.github.mmolosay.playground.presentation.tv.home.menu.ui.MenuScreen
+import io.github.mmolosay.playground.presentation.tv.menu.MenuViewModel
+import io.github.mmolosay.playground.presentation.tv.menu.ui.MenuScreen
 import io.github.mmolosay.playground.presentation.tv.screen.FocusTestsScreen
 import io.github.mmolosay.playground.presentation.tv.screen.home.HomeScreen
 import io.github.mmolosay.playground.presentation.tv.screen.home.HomeViewModel

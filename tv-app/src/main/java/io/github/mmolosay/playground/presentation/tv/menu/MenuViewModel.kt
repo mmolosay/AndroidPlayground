@@ -1,9 +1,9 @@
-package io.github.mmolosay.playground.presentation.tv.home.menu
+package io.github.mmolosay.playground.presentation.tv.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.mmolosay.playground.presentation.tv.home.menu.MenuViewModel.DataState
+import io.github.mmolosay.playground.presentation.tv.menu.MenuViewModel.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
