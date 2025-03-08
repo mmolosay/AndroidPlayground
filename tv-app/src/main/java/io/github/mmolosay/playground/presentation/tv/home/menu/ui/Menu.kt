@@ -1,6 +1,7 @@
 package io.github.mmolosay.playground.presentation.tv.home.menu.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -52,6 +53,7 @@ internal fun Menu(
 
     Box(
         modifier = modifier
+            .background(Color.Black)
             .onFocusChanged {
                 data.toggleMenu(open = it.hasFocus)
             }
@@ -59,10 +61,8 @@ internal fun Menu(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxHeight()
 //                .animateMenuShadow(isMenuOpen = data.isMenuOpen)
-//                .animateContentSize()
-                .background(Color.Black),
+                .animateContentSize() ,
         ) {
             val uiMainMenuItems = data.mainMenu.items.map { item ->
                 UiMainMenuItem(
