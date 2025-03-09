@@ -1,6 +1,7 @@
 package io.github.mmolosay.playground.presentation.tv.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,11 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.github.mmolosay.playground.presentation.tv.menu.ui.ContentFocusRequester
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RailsScreen(
+    contentFocusRequester: ContentFocusRequester,
     railPadding: PaddingValues,
 ) {
     Box {
@@ -39,8 +45,11 @@ fun RailsScreen(
         Column(
             modifier = Modifier
                 .verticalScroll(state = rememberScrollState())
-//                .focusGroup()
-            ,
+                .focusRequester(contentFocusRequester.focusRequester)
+                .focusRestorer {
+                    focusRequesters.first()
+                }
+                .focusGroup(),
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             repeat(times = 4) { index ->
@@ -86,9 +95,8 @@ private fun RailOfTiles(
         Row(
             modifier = Modifier
                 .horizontalScroll(state = rememberScrollState())
-//                .focusRequester(focusRequester)
-//                .focusGroup()
-            ,
+                .focusRequester(focusRequester)
+                .focusGroup(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             repeat(times = 10) { index ->
