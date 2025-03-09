@@ -1,7 +1,6 @@
 package io.github.mmolosay.playground.presentation.tv.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -37,7 +36,13 @@ fun RailsScreen(
 ) {
     Box {
         val focusRequesters = remember { mutableStateListOf<FocusRequester>() }
-        Column {
+        Column(
+            modifier = Modifier
+                .verticalScroll(state = rememberScrollState())
+//                .focusGroup()
+            ,
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
             repeat(times = 4) { index ->
                 key(index) {
                     val focusRequester = remember { FocusRequester() }
@@ -55,9 +60,9 @@ fun RailsScreen(
             }
         }
 
-        LaunchedEffect(Unit) {
-            focusRequesters.first().requestFocus()
-        }
+//        LaunchedEffect(Unit) {
+//            focusRequesters.first().requestFocus()
+//        }
     }
 }
 
@@ -77,35 +82,45 @@ private fun RailOfTiles(
             style = MaterialTheme.typography.bodyLarge,
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
         Row(
             modifier = Modifier
                 .horizontalScroll(state = rememberScrollState())
-                .focusRequester(focusRequester)
-                .focusGroup(),
+//                .focusRequester(focusRequester)
+//                .focusGroup()
+            ,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             repeat(times = 10) { index ->
                 key(index) {
-                    val interactionSource = remember { MutableInteractionSource() }
-                    val isFocused = interactionSource.collectIsFocusedAsState().value
-                    val backgroundColor = if (isFocused) Color.Yellow else Color.LightGray
-                    Box(
-                        modifier = Modifier
-                            .width(180.dp)
-                            .height(100.dp)
-                            .background(backgroundColor)
-                            .focusable(interactionSource = interactionSource),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "$index",
-                            color = Color.Black,
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
+                    Tile(
+                        text = index.toString(),
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun Tile(
+    text: String,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused = interactionSource.collectIsFocusedAsState().value
+    val backgroundColor = if (isFocused) Color.Yellow else Color.LightGray
+    Box(
+        modifier = Modifier
+            .width(180.dp)
+            .height(100.dp)
+            .background(backgroundColor)
+            .focusable(interactionSource = interactionSource),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = text,
+            color = Color.Black,
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }
