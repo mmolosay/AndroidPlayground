@@ -9,9 +9,9 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,56 +22,79 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.github.mmolosay.playground.presentation.tv.common.FocusableElement
 import io.github.mmolosay.playground.presentation.tv.menu.ui.ContentFocusRequester
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RailsScreen(
     contentFocusRequester: ContentFocusRequester,
-    railPadding: PaddingValues,
+    stubFocusRequester: FocusRequester,
+    startPadding: Dp,
 ) {
-    Box {
-        val focusRequesters = remember { mutableStateListOf<FocusRequester>() }
+    Row(
+        modifier = Modifier
+            .padding(start = startPadding),
+    ) {
+        FocusableElement(
+            modifier = Modifier
+                .width(64.dp)
+                .fillMaxHeight()
+                .focusRequester(stubFocusRequester),
+        )
+
+        Spacer(Modifier.width(16.dp))
+        val railsFocusRequester = remember { FocusRequester() }
         Column(
             modifier = Modifier
                 .verticalScroll(state = rememberScrollState())
-                .focusRequester(contentFocusRequester.focusRequester)
-                .focusRestorer {
-                    focusRequesters.first()
+                .focusRequester(railsFocusRequester)
+                .focusProperties {
+                    exit = {
+                        val hasSaved = railsFocusRequester.saveFocusedChild()
+                        FocusRequester.Default
+                    }
+                    enter = {
+                        val hasRestored = railsFocusRequester.restoreFocusedChild()
+                        if (hasRestored) FocusRequester.Cancel else FocusRequester.Default
+                    }
                 }
                 .focusGroup(),
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
-            repeat(times = 4) { index ->
-                key(index) {
-                    val focusRequester = remember { FocusRequester() }
-                    LaunchedEffect(Unit) {
-                        focusRequesters += focusRequester
-                    }
+            repeat(times = 4) { railIndex ->
+                key(railIndex) {
                     RailOfTiles(
-                        modifier = Modifier
-                            .padding(railPadding)
-                            .padding(start = 16.dp),
-                        focusRequester = focusRequester,
-                        title = "Rail $index",
+                        modifier = Modifier,
+                        title = "Rail $railIndex",
+                        railIndex = railIndex,
                     )
                 }
             }
         }
 
-//        LaunchedEffect(Unit) {
-//            focusRequesters.first().requestFocus()
-//        }
+        LaunchedEffect(contentFocusRequester) {
+            contentFocusRequester.eventFlow.collectLatest { event ->
+                delay(3200.milliseconds)
+                val hasRestored = railsFocusRequester.restoreFocusedChild()
+                if (!hasRestored) {
+                    railsFocusRequester.requestFocus()
+                }
+            }
+        }
     }
 }
 
@@ -79,11 +102,13 @@ fun RailsScreen(
 @Composable
 private fun RailOfTiles(
     modifier: Modifier,
-    focusRequester: FocusRequester,
     title: String,
+    railIndex: Int,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .focusGroup(),
+        horizontalAlignment = Alignment.Start,
     ) {
         Text(
             text = title,
@@ -95,14 +120,13 @@ private fun RailOfTiles(
         Row(
             modifier = Modifier
                 .horizontalScroll(state = rememberScrollState())
-                .focusRequester(focusRequester)
                 .focusGroup(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            repeat(times = 10) { index ->
-                key(index) {
+            repeat(times = 10) { tileIndex ->
+                key(tileIndex) {
                     Tile(
-                        text = index.toString(),
+                        text = "$railIndex.$tileIndex",
                     )
                 }
             }

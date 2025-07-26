@@ -53,10 +53,8 @@ internal fun Menu(
 
     Box(
         modifier = modifier
-            .background(Color.Black)
-            .onFocusChanged {
-                data.toggleMenu(open = it.hasFocus)
-            }
+//            .background(Color.Black) // TODO: rollback
+            .background(Color.Black.copy(alpha = 0.20f))
             .focusGroup(),
     ) {
         Row(
